@@ -4,7 +4,7 @@ This scenario demonstrates the OAuth 2.0 Device Authorization Grant (device code
 
 - **OAuth2 Provider (Keycloak)**: runs in `device-code-flow/oauth2-provider/` and exposes the device authorization endpoint (`/protocol/openid-connect/auth/device`) and the token endpoint. It ships with test certificates and an importable realm (`imports/realm.json`). The provider listens on HTTPS port `9443` for admin and device endpoints.
 - **Client**: a small helper script `device-code-flow/client/create-user.sh` which starts a device authorization request, prompts the user to visit the verification URL and enter the user code, polls the token endpoint, then calls the resource server with the obtained access token.
-- **Resource Server**: a Quarkus-based example application under `device-code-flow/resource-server/example-app` (and a convenience setup script `device-code-flow/resource-server/setup-resource-server.sh`). The example app binds to HTTPS port `8443` by default and validates incoming access tokens and scopes.
+- **Resource Server**: a Quarkus-based example application under `device-code-flow/resource-server` (and a convenience setup script `device-code-flow/resource-server/setup-resource-server.sh`). The example app binds to HTTPS port `8443` by default and validates incoming access tokens and scopes.
 
 Flow summary:
 
@@ -19,7 +19,7 @@ Top-level layout for this scenario:
 
 - `client/` — helper client scripts. Key file: `create-user.sh`
 - `oauth2-provider/` — local provider artifacts: `docker-compose.yaml`, `start.sh`, `certs/`, and `imports/realm.json`.
-- `resource-server/` — helper to create or run the resource server; contains `example-app/` Quarkus project.
+- `resource-server/` — helper to create or run the resource server; contains `src/` Quarkus project.
 
 Keep reading for how to start each component.
 
@@ -30,12 +30,17 @@ Keep reading for how to start each component.
 
 - json: `device-code-flow/oauth2-provider/imports/realm.json`
 
-- Login to Keycloak admin console at: `https://localhost:9443/auth/admin/` (admin/admin)
-
 ```bash
 #start the oauth2 provider
-./device-code-flow/oauth2-provider/start.sh
+cd ./device-code-flow/oauth2-provider
+
+#remove any existing containers related to keycloak
+docker rm $(docker ps -a -q --filter name=keycloak) 2>/dev/null || true
+./start.sh
 ```
+
+- Login to Keycloak admin console at: `https://localhost:9443/` (admin/admin)
+
 
 ### Client & Realm configuration for Device Flow
 
@@ -64,9 +69,9 @@ Notes
 
 ## Create Resource Server from Scratch
 
-### Skip below steps if you would like to continue with the existing resource server under `resource-server/example-app`
+### Skip below steps if you would like to continue with the existing resource server under `resource-server/src`
 
-Start
+### Start with existing resource (Quick)
 
 ```shell
 ./device-code-flow/resource-server/setup-resource-server.sh
@@ -85,12 +90,12 @@ quarkus --version
 ### Create Resource Server Skeleton
 
 ```shell
-cd ./device-code-flow/resource-server
+cd ./device-code-flow
 
 #Below command creates a quarkus project with required extensions
-quarkus create app example-app --extensions='resteasy,resteasy-jackson,quarkus-oidc' --no-code
+quarkus create app resource-server --extensions='resteasy,resteasy-jackson,quarkus-oidc' --no-code
 
-cd example-app
+cd resource-server
 ./mvnw quarkus:dev
 ```
 
@@ -175,3 +180,16 @@ Update `application.properties` file with required properties, use the quarkus.i
 
 Note: Once oauth2-provider and resource-server are up and running, you can use the client script under `device-code-flow/client/create-user.sh` to create a user using device code flow and call the resource server API.
 
+the script uses curl commands to perform the device code flow steps and call the resource server.
+
+- Device Authorization
+- Polling Token Endpoint
+- Create Resource - `POST - /api/user`
+- GET Resource - `GET - /api/user/{id}`
+
+```bash
+cd ./device-code-flow/client
+
+#testuser/testuser123
+./create-user.sh 
+```

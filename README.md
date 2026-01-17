@@ -15,14 +15,14 @@ This repository contains example implementations, reference configurations, and 
 - `device-code-flow/` — device flow example: contains a `client/` helper and an `oauth2-provider/` test Keycloak setup.
 	- `device-code-flow/client/create-user.sh` — example script that uses the device flow to obtain a token and call the example API.
 	- `device-code-flow/oauth2-provider/` — local provider compose files, certs and import realms.
-- `resource-server/` — example resource server and a sample application under `example-app/`.
+- `resource-server/` — example resource server and a sample application under `resource-server/`.
 - `best-practices/` — recommendations and notes for secure OAuth2 deployments.
 
 ## Quick start (local)
 
 1. Start the provider (see the `device-code-flow/oauth2-provider/start.sh` or provider README).
 2. Run a client example in the corresponding flow folder (e.g. `device-code-flow/client/create-user.sh`).
-3. Inspect the `resource-server/example-app` for how to validate access tokens and protect endpoints.
+3. Inspect the `resource-server/resource-server` for how to validate access tokens and protect endpoints.
 
 ## Notes
 

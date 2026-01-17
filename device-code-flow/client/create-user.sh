@@ -84,7 +84,7 @@ if [[ -n ${ACCESS_TOKEN} ]]; then
   #Get the created user details
   echo -e "\nGet the created user details by pressing enter"
   read
-  FETCH_USER_RESPONSE=$(curl -X GET --insecure -H "Authorization: Bearer ${ACCESS_TOKEN}" "https://localhost:8443/api/user/$USER_ID")
+  FETCH_USER_RESPONSE=$(curl -X GET --insecure -H "Authorization: Bearer ${ACCESS_TOKEN}" "https://localhost:8443/api/user/${USER_ID}")
 
   echo -e "\nGet - User Details: $FETCH_USER_RESPONSE\n"
 fi
