@@ -74,7 +74,7 @@ Notes
 ### Start with existing resource (Quick)
 
 ```shell
-./device-code-flow/resource-server/setup-resource-server.sh
+./device-code-flow/setup-resource-server.sh
 ```
 
 ### Pre-requisite
