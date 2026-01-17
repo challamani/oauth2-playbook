@@ -1,17 +1,51 @@
 # Device Code Flow OAuth2 Example
 
-## Architecture
+This scenario demonstrates the OAuth 2.0 Device Authorization Grant (device code flow) using a local OAuth2 provider (Keycloak), a resource server (Quarkus example app) and a client helper script that performs the device flow and calls the API.
 
-![Device Code Flow Architecture](./device-code-flow-architecture.png)
+- **OAuth2 Provider (Keycloak)**: runs in `device-code-flow/oauth2-provider/` and exposes the device authorization endpoint (`/protocol/openid-connect/auth/device`) and the token endpoint. It ships with test certificates and an importable realm (`imports/realm.json`). The provider listens on HTTPS port `9443` for admin and device endpoints.
+- **Client**: a small helper script `device-code-flow/client/create-user.sh` which starts a device authorization request, prompts the user to visit the verification URL and enter the user code, polls the token endpoint, then calls the resource server with the obtained access token.
+- **Resource Server**: a Quarkus-based example application under `device-code-flow/resource-server/example-app` (and a convenience setup script `device-code-flow/resource-server/setup-resource-server.sh`). The example app binds to HTTPS port `8443` by default and validates incoming access tokens and scopes.
 
+Flow summary:
+
+1. Client POSTs to the device authorization endpoint and receives `device_code`, `user_code`, and `verification_uri`.
+2. User visits the `verification_uri` (on a browser-capable device) and authenticates using the `user_code`.
+3. Client polls the token endpoint with `device_code` until the user authorizes and an access token is returned.
+4. Client calls the resource server API with `Authorization: Bearer <access_token>` to perform operations such as creating a user.
+
+## Structure
+
+Top-level layout for this scenario:
+
+- `client/` — helper client scripts. Key file: `create-user.sh`
+- `oauth2-provider/` — local provider artifacts: `docker-compose.yaml`, `start.sh`, `certs/`, and `imports/realm.json`.
+- `resource-server/` — helper to create or run the resource server; contains `example-app/` Quarkus project.
+
+Keep reading for how to start each component.
 
 ## Start Keycloak Server (OAuth2 Provider)
 
+
+### Understand the realm setup
+
+- json: `device-code-flow/oauth2-provider/imports/realm.json`
+
+- Login to Keycloak admin console at: `https://localhost:9443/auth/admin/` (admin/admin)
+
 ```bash
-./oauth2-provider/start.sh
+#start the oauth2 provider
+./device-code-flow/oauth2-provider/start.sh
 ```
 
-## Resource Server (API Server)
+## Create Resource Server from Scratch
+
+### Skip below steps if you would like to continue with the existing resource server under `resource-server/example-app`
+
+Start
+
+```shell
+./device-code-flow/resource-server/setup-resource-server.sh
+```
 
 ### Pre-requisite
 
@@ -58,4 +92,61 @@ openssl req -x509 -newkey rsa:2048 \
 
 Update `application.properties` file with required properties, use the quarkus.io official documentation for reference.
 
-[Quarkus OIDC Guide](https://quarkus.io/guides/security-oidc-configuration-properties-reference)
+- [Quarkus OIDC Guide](https://quarkus.io/guides/security-oidc-configuration-properties-reference)
+- Add an example API resource class `UserResource.java` to handle user creation.
+- Implement the JWT validation Login and scope checks using `@ScopesAllowed` annotation.
+
+## Create ScopesAllowed Annotation
+
+```java
+  @Target({ ElementType.METHOD, ElementType.TYPE })
+  @Retention(RetentionPolicy.RUNTIME)
+  public @interface ScopesAllowed {
+      String[] value();
+  }
+```
+
+## Imlement a scopes validation filter 
+
+```java
+  public class AccessController implements ContainerRequestFilter {
+
+    private static final Logger Logger = LoggerFactory.getLogger(AccessController.class);
+    private final JsonWebToken jwt;
+    private final ResourceInfo resourceInfo;
+
+    public AccessController(ResourceInfo resourceInfo, JsonWebToken jwt) {
+            this.resourceInfo = resourceInfo;
+            this.jwt = jwt;
+    }
+
+    @Override
+    public void filter(ContainerRequestContext requestContext) throws IOException {
+        ScopesAllowed annotation = resourceInfo.getResourceMethod().getAnnotation(ScopesAllowed.class);
+        if(Objects.isNull(annotation)){
+            Logger.info("No ScopesAllowed annotation present, skipping scope validation");
+            return;
+        }
+        String[] definedScopes = annotation.value();
+        String jwtScopes = jwt.getClaim("scope");
+
+        if (Objects.isNull(jwtScopes) || !hasRequiredScope(jwtScopes, definedScopes)) {
+            requestContext.abortWith(Response.status(Response.Status.FORBIDDEN)
+                    .entity("Forbidden: JWT does not have required scopes.")
+                    .build());
+            return;
+        }
+    }
+
+    private boolean hasRequiredScope(String jwtScopes, String[] definedScopes) {
+        List<String> definedScopesList = List.of(definedScopes);
+        return definedScopesList.stream()
+                .anyMatch(jwtScopes::contains);
+    }
+}
+```
+
+## Create a sample user using client script
+
+Note: Once oauth2-provider and resource-server are up and running, you can use the client script under `device-code-flow/client/create-user.sh` to create a user using device code flow and call the resource server API.
+
