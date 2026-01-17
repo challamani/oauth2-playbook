@@ -37,6 +37,31 @@ Keep reading for how to start each component.
 ./device-code-flow/oauth2-provider/start.sh
 ```
 
+### Client & Realm configuration for Device Flow
+
+Key values
+
+- **Realm**: `oauth2-playbook` (import file: `device-code-flow/oauth2-provider/imports/realm.json`)
+- **Client ID**: `oauth2-playbook-device-flow`
+
+Required client settings (Keycloak UI or in the imported `realm.json`)
+
+- **Public client**: ON / `publicClient: true` — device flow clients are typically public.
+- **OAuth2 Device Authorization Grant**: Enabled / `attributes.oauth2.device.authorization.grant.enabled: "true"`.
+- **Consent required**: true (can be toggled per your UX needs).
+- **Redirect URIs**: Not required for device flow; leave blank or set to `+` in Keycloak if needed.
+- **Default scopes**: include `profile`; add optional `users:admin` if the resource server requires it.
+
+Relevant endpoints (default local URLs)
+
+- Device Authorization Endpoint: `https://localhost:9443/realms/oauth2-playbook/protocol/openid-connect/auth/device`
+- Token Endpoint: `https://localhost:9443/realms/oauth2-playbook/protocol/openid-connect/token`
+
+Notes
+
+- The provided `realm.json` already contains a `oauth2-playbook-device-flow` client configured for device flow and a `users:admin` scope mapped to the resource server audience. Inspect `device-code-flow/oauth2-provider/imports/realm.json` to see the exact attributes and mappings.
+- Ensure the resource server client (`oauth2-playbook-resource-server`) has the appropriate audience and scope mappings so access tokens issued to the device client are accepted by the API.
+
 ## Create Resource Server from Scratch
 
 ### Skip below steps if you would like to continue with the existing resource server under `resource-server/example-app`

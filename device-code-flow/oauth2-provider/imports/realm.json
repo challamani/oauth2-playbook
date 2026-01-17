@@ -81,7 +81,7 @@
     {
       "clientId": "oauth2-playbook-device-flow",
       "name": "oauth2-playbook-device-flow",
-      "description": "Client for Device Flow",
+      "description": "Client for Device Code Flow",
       "enabled": true,
       "alwaysDisplayInConsole": true,
       "bearerOnly": false,
