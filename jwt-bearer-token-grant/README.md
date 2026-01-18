@@ -25,5 +25,12 @@ The JWT Bearer Token Grant Type is typically used in scenarios where:
 
 - the client application needs to authenticate using a JWT assertion, which can include claims about the client and its permissions.
 - there is a need for stateless authentication, as JWTs can be self-contained and do not require server-side session storage.
+- When the client is authorized with different Idp and resources are protected with another Idp then cliient can use JWT Bearer token grant to exchange the token from one Idp to another.
+- the client application requires a more flexible and extensible authentication mechanism that can include additional claims and metadata in the JWT.
+
 
 However, it is generally recommended to use more common grant types like the Authorization Code Flow with PKCE or Client Credentials Flow for most use cases, as they provide better security and flexibility. The JWT Bearer Token Grant Type may be considered in specific scenarios where its advantages align with the application's requirements.
+
+
+JWT Bearer Grant (RFC 7523)	
+Token Exchange (RFC 8693)
