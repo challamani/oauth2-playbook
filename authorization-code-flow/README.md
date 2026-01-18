@@ -56,6 +56,9 @@ cd ./authorization-code-flow/oauth2-provider
 ./authorization-code-flow/setup-resource-server.sh
 ```
 
+(Or) if you want to create it from scratch use the [Create Resource Server](../docs/resource-server-creation.md) instructions.
+
+
 ### Resource Server Health Check
 
 - Verify the resource server is running: [https://localhost:8443/q/health](https://localhost:8443/q/health)

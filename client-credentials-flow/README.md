@@ -38,6 +38,12 @@ To get started with the Client Credentials Flow example:
 
 ### Create Self-Signed Certificates for mTLS
 
+The script below does the following:
+
+- Creates self-signed certificates for the client to use for mTLS authentication with Keycloak.
+- Creates a truststore.jks file using keytool and imports client certificate alias into it.
+- Copies the truststore.jks file to the oauth2-provider directory for Keycloak to use.
+
 ```shell
 cd client
 
@@ -60,6 +66,9 @@ cd ../oauth2-provider
 ```shell
 ./client-credentials-flow/setup-resource-server.sh
 ```
+
+(Or) if you want to create it from scratch use the [Create Resource Server](../docs/resource-server-creation.md) instructions.
+
 
 ### Test the Client Credentials Flow
 
