@@ -106,3 +106,10 @@ export HTTPS=true && npm start
 Notes:
 - The React app includes a `Callback` page at `/callback` — ensure the provider redirect URI matches the app (for example `https://localhost:3000/callback`).
 - Use the realm import file above to review clients, scopes and roles if you need to adjust the Keycloak configuration.
+
+## When to Use Authorization Code Flow with PKCE
+
+- Use this flow when building public clients, such as single-page applications (SPAs) or mobile apps, that cannot securely store client secrets.
+- It is suitable when you want to enhance security by mitigating authorization code interception attacks.
+- This flow is recommended for applications that require user authentication and access to protected resources on behalf of the user.
+- It is ideal when you want to leverage the benefits of the Authorization Code Flow while ensuring that the client application does not expose sensitive information.

@@ -23,3 +23,12 @@ sequenceDiagram
 ```
 
 *This grant type implementation is not yet completed in oauth2-playbook*.
+
+## When to use Implicit Flow
+
+The Implicit Flow is generally discouraged for modern applications due to security concerns, as it exposes access tokens directly in the URL fragment, which can be intercepted or leaked. However, it may be considered in legacy scenarios where:
+
+- the client application is a single-page application (SPA) that cannot securely store client secrets.
+- there is a need for immediate access to tokens without an additional round trip to exchange an authorization for an access token.
+
+In most cases, it is recommended to use the Authorization Code Flow with PKCE for SPAs and other public clients to enhance security and mitigate risks associated with token exposure.

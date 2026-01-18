@@ -214,3 +214,11 @@ cd ./device-code-flow/client
 #testuser/testuser123
 ./create-user.sh 
 ```
+
+## When to use Device Code Grant
+
+The Device Code Grant is particularly useful in scenarios where the client device has limited input capabilities or cannot securely handle user credentials. Common use cases include:
+
+- Smart TVs, gaming consoles, and other IoT devices where users may find it cumbersome to enter credentials directly on the device.
+- Command-line applications or scripts that need to authenticate users without a web browser.
+- Situations where enhanced security is required by avoiding direct handling of user credentials by the client application.

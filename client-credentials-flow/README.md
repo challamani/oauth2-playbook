@@ -83,3 +83,11 @@ cd ../oauth2-provider
 cd ../client
 ./start.sh
 ```
+
+## When to use Client Credentials Grant
+
+The Client Credentials Grant is typically used in scenarios where the client application needs to access resources that are not associated with a specific user. Common use cases include:
+    - Machine-to-machine communication, such as microservices interacting with each other.
+    - Backend services that need to access APIs on behalf of themselves rather than on behalf of a user.
+    - Automated processes or scheduled tasks that require access to protected resources.
+    - It is important to note that the Client Credentials Grant should only be used by trusted clients, as it involves the use of client credentials (client ID and client secret) for authentication.
