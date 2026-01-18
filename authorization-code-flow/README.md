@@ -4,6 +4,25 @@ This example demonstrates an OAuth2 Authorization Code Flow with PKCE using Keyc
 
 This is not a production-ready setup. It is intended for educational purposes to illustrate the OAuth2 Authorization Code Flow with PKCE.
 
+## Sequence Diagram
+
+```mermaid
+sequenceDiagram    
+    participant User
+    participant ClientApp
+    participant AuthServer
+    participant ResourceServer
+    User->>ClientApp: (1)Access protected resource
+    ClientApp->>AuthServer: (2)Redirect to Authorization Endpoint
+    AuthServer->>User: (3)Prompt for login and consent
+    User->>AuthServer: (4)Submit credentials and consent
+    AuthServer->>ClientApp: (5)Redirect back with Authorization Code
+    ClientApp->>AuthServer: (6)Exchange Code for Access Token
+    AuthServer->>ClientApp: (7)Return Access Token
+    ClientApp->>ResourceServer: (8)Access protected resource with Access Token
+    ResourceServer->>ClientApp: (9)Return protected resource
+```
+
 ## OAuth2 Provider Setup
 
 ### Start the OAuth2 Provider with pre-configured realm
