@@ -33,6 +33,8 @@ replay_pid*
 ./**/certs/
 # Ignore pem files and certs directory for the oauth2-provider
 */oauth2-provider/certs/
+*/*/certs/
+*/*/credentials/
 */oauth2-provider/**/*.pem
 */oauth2-provider/*.pem
 */resource-server/**/*.pem

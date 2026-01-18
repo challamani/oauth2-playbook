@@ -1,0 +1,20 @@
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: keycloak
+    ports:
+      - "9443:8443"
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KC_BOOTSTRAP_ADMIN_PASSWORD}
+      KC_HTTPS_PORT: 8443
+      KC_HTTPS_CERTIFICATE_FILE: /opt/keycloak/certs/cert.pem
+      KC_HTTPS_CERTIFICATE_KEY_FILE: /opt/keycloak/certs/key.pem
+      KC_HTTPS_TRUST_STORE_FILE: /opt/keycloak/certs/truststore.jks
+      KC_HTTPS_TRUST_STORE_PASSWORD: ${KC_HTTPS_TRUST_STORE_PASSWORD}
+      KC_HTTPS_CLIENT_AUTH: request
+    volumes:
+      - ./imports:/opt/keycloak/data/import
+      - ./certs:/opt/keycloak/certs
+    command: start-dev --import-realm
+    restart: unless-stopped
