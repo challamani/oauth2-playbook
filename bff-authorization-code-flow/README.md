@@ -1,4 +1,4 @@
-# Confidential Client -  authorization code flow
+# Confidential Client -  authorization code flow + PKCE
 
 BFF Authorization Code Flow (Backends for Frontends)
 
@@ -10,10 +10,9 @@ Backend clients (also known as confidential clients) can securely store client c
 
 ```mermaid
 sequenceDiagram
-    autonumber
-    participant Browser as React UI (Browser)
-    participant BFF as Quarkus BFF (Confidential Client)
-    participant KC as Keycloak (IdP)
+    participant Browser as ReactUI(Browser)
+    participant BFF as ConfidentialClient
+    participant KC as Keycloak(IdP)
     participant RS as Quarkus Resource Server
 
     Note over Browser, BFF: Phase 1: Initiation
@@ -49,7 +48,7 @@ sequenceDiagram
 
     Note over BFF: 9. Encrypt Tokens into 'q_session' Cookie
     BFF-->>Browser: 302 Redirect to /dashboard
-    Note left of Browser: Set-Cookie: q_session=ENCRYPTED_BLOB; HttpOnly; Secure
+    Note left of Browser: 'Set-Cookie: q_session=ENCRYPTED_BLOB; HttpOnly; Secure'
 
     Note over Browser, RS: Phase 4: Resource Access
     Browser->>BFF: GET /api/data
