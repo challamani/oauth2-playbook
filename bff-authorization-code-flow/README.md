@@ -48,7 +48,7 @@ sequenceDiagram
 
     Note over BFF: 9. Encrypt Tokens into 'q_session' Cookie
     BFF-->>Browser: 302 Redirect to /dashboard
-    Note left of Browser: 'Set-Cookie: q_session=ENCRYPTED_BLOB; HttpOnly; Secure'
+    Note left of Browser: 'Set-Cookie, q_session=ENCRYPTED_BLOB, HttpOnly, Secure'
 
     Note over Browser, RS: Phase 4: Resource Access
     Browser->>BFF: GET /api/data
