@@ -1,5 +1,9 @@
 # Authorization Code Flow with PKCE Example
 
+This example demonstrates an OAuth2 Authorization Code Flow with PKCE using Keycloak as the OAuth2 provider, a simple resource server, and a React client application.
+
+This is not a production-ready setup. It is intended for educational purposes to illustrate the OAuth2 Authorization Code Flow with PKCE.
+
 ## OAuth2 Provider Setup
 
 ### Start the OAuth2 Provider with pre-configured realm

@@ -2,6 +2,8 @@
 
 This repository contains example implementations, reference configurations, and best-practice notes for several OAuth 2.0 and OpenID Connect flows. It's intended as a hands-on playbook to learn, demo and test common flows, provider setups, and resource-server integration.
 
+The examples use Keycloak as the OAuth2 provider and include simple clients and resource servers to illustrate how the pieces fit together.
+
 ## Objective
 
 - Provide minimal, runnable examples for common OAuth2 flows so developers can experiment locally.
@@ -59,7 +61,15 @@ If you'd like, I can add short run commands for each flow or a single script to 
 - Bearer Token Usage (RFC 6750): https://tools.ietf.org/html/rfc6750
 - OAuth 2.0 Threat Model and Security Considerations (RFC 6819): https://tools.ietf.org/html/rfc6819
 - OAuth 2.0 for Native Apps (RFC 8252): https://tools.ietf.org/html/rfc8252
+- OAuth2 Google's best practices: https://developers.google.com/identity/protocols/oauth2/resources/best-practices
+- OAuth2 Security Best Current Practice (IETF drafts & guidance): https://datatracker.ietf.org/doc/html/rfc9700
+- OAuth2 Cheatsheet: https://cheatsheetseries.owasp.org/cheatsheets/OAuth2_Cheat_Sheet.html
+- Udemy Course: The Nuts and Bolts of OAuth 2.0: https://www.udemy.com/course/oauth-2-simplified/?referralCode=B04F59AED67B8DA74FA7
 - OpenID Connect Core 1.0: https://openid.net/specs/openid-connect-core-1_0.html
-- OAuth Security Best Current Practice (IETF drafts & guidance): https://datatracker.ietf.org/doc/html/rfc9700
 
 Suggested practical best-practices (short): use Authorization Code + PKCE for public clients, avoid implicit flow, prefer short-lived access tokens with refresh tokens where appropriate, validate audience and scopes on resource servers, use HTTPS everywhere, and follow the IETF and provider security guidance linked above.
+
+
+## Note
+
+These examples are for educational purposes only and are not production-ready. They aim to demonstrate concepts, configurations, and flow mechanics in a clear manner.
