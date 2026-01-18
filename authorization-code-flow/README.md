@@ -4,6 +4,8 @@ This example demonstrates an OAuth2 Authorization Code Flow with PKCE using Keyc
 
 This is not a production-ready setup. It is intended for educational purposes to illustrate the OAuth2 Authorization Code Flow with PKCE.
 
+Public clients (like single-page applications) cannot securely store client secrets. Therefore, they use PKCE (Proof Key for Code Exchange) to enhance the security of the Authorization Code Flow by mitigating authorization code interception attacks.
+
 ## Sequence Diagram
 
 ```mermaid
