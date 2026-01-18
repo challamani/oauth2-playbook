@@ -12,15 +12,15 @@ sequenceDiagram
     participant ClientApp (CLI Tool)
     participant AuthServer
     participant ResourceServer
-    ClientApp->>AuthServer: (1)Request Device Code
-    AuthServer->>ClientApp: (2)Return Device Code, User Code, Verification URI
+    ClientApp (CLI Tool)->>AuthServer: (1)Request Device Code
+    AuthServer->>ClientApp (CLI Tool): (2)Return Device Code, User Code, Verification URI
     User->>AuthServer: (3)Visit Verification URI and enter User Code
     AuthServer->>User: (4)Prompt for login and consent
     User->>AuthServer: (5)Submit credentials and consent
-    ClientApp->>AuthServer: (6)Poll Token Endpoint with Device Code
-    AuthServer->>ClientApp: (7)Return Access Token
-    ClientApp->>ResourceServer: (8)Access protected resource with Access Token
-    ResourceServer->>ClientApp: (9)Return protected resource
+    ClientApp (CLI Tool)->>AuthServer: (6)Poll Token Endpoint with Device Code
+    AuthServer->>ClientApp (CLI Tool): (7)Return Access Token
+    ClientApp (CLI Tool)->>ResourceServer: (8)Access protected resource with Access Token
+    ResourceServer->>ClientApp (CLI Tool): (9)Return protected resource
 ```
 
 - **OAuth2 Provider (Keycloak)**: runs in `device-code-flow/oauth2-provider/` and exposes the device authorization endpoint (`/protocol/openid-connect/auth/device`) and the token endpoint. It ships with test certificates and an importable realm (`imports/realm.json`). The provider listens on HTTPS port `9443` for admin and device endpoints.
