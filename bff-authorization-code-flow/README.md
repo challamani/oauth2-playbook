@@ -10,57 +10,27 @@ Backend clients (also known as confidential clients) can securely store client c
 
 ```mermaid
 sequenceDiagram
-    participant Browser as ReactUI(Browser)
-    participant BFF as ConfidentialClient
-    participant KC as Keycloak(IdP)
-    participant RS as Quarkus Resource Server
+  participant User
+  participant Browser(UI)
+  participant Backend(BFF)
+  participant AuthServer
+  participant ResourceServer
 
-    Note over Browser, BFF: Phase 1: Initiation
-    Browser->>BFF: GET /api/login
-    Note over BFF: 1. Generate random 'code_verifier'
-    Note over BFF: 2. Compute 'code_challenge' = Base64Url(SHA256(verifier))
-    Note over BFF: 3. Generate 'state' (CSRF protection)
-    Note over BFF: 4. Store verifier & state in encrypted Session Cookie (q_session)
-    
-    BFF-->>Browser: 302 Redirect to Keycloak /authorize
-    Note right of Browser: Includes: client_id, code_challenge, state, redirect_uri
-
-    Note over Browser, KC: Phase 2: Keycloak Authentication
-    Browser->>KC: GET /authorize?client_id=...&code_challenge=...
-    KC->>Browser: Display Login Page
-    Browser->>KC: POST credentials (Username/Password)
-    Note over KC: Verify Credentials
-    KC-->>Browser: 302 Redirect to BFF /callback
-    Note left of Browser: Includes: authorization_code & state
-
-    Note over Browser, BFF: Phase 3: Token Exchange (Back-channel)
-    Browser->>BFF: GET /callback?code=AUTH_CODE&state=STATE
-    
-    Note over BFF: 5. Verify 'state' matches session
-    Note over BFF: 6. Retrieve 'code_verifier' from session
-    
-    BFF->>KC: POST /token (Server-to-Server)
-    Note right of BFF: Payload: code, redirect_uri, grant_type=authorization_code,<br/>code_verifier, client_id, client_secret
-    
-    Note over KC: 7. Validate client_secret
-    Note over KC: 8. Verify: Hash(code_verifier) == stored code_challenge
-    KC-->>BFF: 200 OK (Access Token, ID Token, Refresh Token)
-
-    Note over BFF: 9. Encrypt Tokens into 'q_session' Cookie
-    BFF-->>Browser: 302 Redirect to /dashboard
-    Note left of Browser: 'Set-Cookie, q_session=ENCRYPTED_BLOB, HttpOnly, Secure'
-
-    Note over Browser, RS: Phase 4: Resource Access
-    Browser->>BFF: GET /api/data
-    Note right of Browser: Cookie: q_session=...
-    
-    Note over BFF: 10. Decrypt Cookie & extract Access Token
-    BFF->>RS: GET /resource/protected
-    Note right of BFF: Header: Authorization: Bearer <JWT>
-    
-    Note over RS: 11. Validate JWT (Signature, Iss, Aud, Exp)
-    RS-->>BFF: 200 OK (Data JSON)
-    BFF-->>Browser: 200 OK (Data JSON)
+  User->>Browser(UI): Clicks "Login"
+  Browser(UI)->>Backend(BFF): GET /auth/start
+  Backend(BFF)->>Backend(BFF): generate state/nonce, store server-side
+  Backend(BFF)->>Browser(UI): 302 -> AuthServer (with state, nonce, redirect_uri)
+  Browser(UI)->>AuthServer: User authenticates + consents
+  AuthServer->>Browser(UI): 302 -> redirect_uri?code=...&state=...
+  Browser(UI)->>Backend(BFF): Callback (contains code,state)
+  Backend(BFF)->>Backend(BFF): verify state/nonce
+  Backend(BFF)->>AuthServer: POST token endpoint (code exchange, client auth)
+  AuthServer->>Backend(BFF): tokens (access, refresh, id_token)
+  Backend(BFF)->>Backend(BFF): validate tokens, create server session, set HttpOnly Secure cookie
+  Browser(UI)->>Backend(BFF): API calls with session cookie
+  Backend(BFF)->>ResourceServer: call APIs using access token (server-to-server)
+  ResourceServer->>Backend(BFF): API response
+  Backend(BFF)->>Browser(UI): return data for UI
 ```
 
 
