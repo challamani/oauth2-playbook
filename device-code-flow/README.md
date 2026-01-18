@@ -4,6 +4,25 @@ This scenario demonstrates the OAuth 2.0 Device Authorization Grant (device code
 
 This is not a production-ready setup. It is intended for educational purposes to illustrate the OAuth2 Device Code Flow.
 
+## Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant ClientApp (CLI Tool)
+    participant AuthServer
+    participant ResourceServer
+    ClientApp->>AuthServer: (1)Request Device Code
+    AuthServer->>ClientApp: (2)Return Device Code, User Code, Verification URI
+    User->>AuthServer: (3)Visit Verification URI and enter User Code
+    AuthServer->>User: (4)Prompt for login and consent
+    User->>AuthServer: (5)Submit credentials and consent
+    ClientApp->>AuthServer: (6)Poll Token Endpoint with Device Code
+    AuthServer->>ClientApp: (7)Return Access Token
+    ClientApp->>ResourceServer: (8)Access protected resource with Access Token
+    ResourceServer->>ClientApp: (9)Return protected resource
+```
+
 - **OAuth2 Provider (Keycloak)**: runs in `device-code-flow/oauth2-provider/` and exposes the device authorization endpoint (`/protocol/openid-connect/auth/device`) and the token endpoint. It ships with test certificates and an importable realm (`imports/realm.json`). The provider listens on HTTPS port `9443` for admin and device endpoints.
 - **Client**: a small helper script `device-code-flow/client/create-user.sh` which starts a device authorization request, prompts the user to visit the verification URL and enter the user code, polls the token endpoint, then calls the resource server with the obtained access token.
 - **Resource Server**: a Quarkus-based example application under `device-code-flow/resource-server` (and a convenience setup script `device-code-flow/resource-server/setup-resource-server.sh`). The example app binds to HTTPS port `8443` by default and validates incoming access tokens and scopes.
