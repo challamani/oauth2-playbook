@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd ./authorization-code-flow/resource-server
+cd ./bff-authorization-code-flow/resource-server
 
 openssl req -x509 -newkey rsa:2048 \
   -keyout ./src/main/resources/key.pem \

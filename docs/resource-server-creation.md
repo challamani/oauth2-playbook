@@ -64,10 +64,10 @@ local testing and configure Quarkus to use it.
 Create cert and key (example using OpenSSL):
 
 ```bash
-mkdir -p src/main/resources/certs
+mkdir -p src/main/resources
 openssl req -x509 -newkey rsa:2048 \
-  -keyout ./src/main/resources/certs/key.pem \
-  -out ./src/main/resources/certs/cert.pem \
+  -keyout ./src/main/resources/key.pem \
+  -out ./src/main/resources/cert.pem \
   -days 365 -nodes \
   -subj "/C=GB/ST=England/L=Manchester/O=example/OU=dev/CN=localhost" \
   -addext "subjectAltName=DNS:localhost,IP:127.0.0.1"
@@ -166,6 +166,7 @@ public class AccessController implements ContainerRequestFilter {
 ```
 
 Notes:
+
 - Register the filter as a CDI bean (annotate `@Provider`) or let Quarkus
   auto-discover it.
 - Tune `@Priority` if you require ordering relative to authentication.
@@ -222,10 +223,7 @@ For MTLS or client cert examples adjust `curl` flags accordingly (`--cert` and
 
 ## Further reading
 
-- Quarkus OIDC guide: https://quarkus.io/guides/security-oidc-configuration-properties-reference
+- [Quarkus OIDC guide](https://quarkus.io/guides/security-oidc-configuration-properties-reference)
 - Keycloak docs for client configuration and protocol endpoints.
 
 ---
-Place this file somewhere central (for example `docs/resource-server-creation.md`) and
-link from each grant type folder README so developers can follow a single,
-consistent process for creating the resource server used by examples.

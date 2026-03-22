@@ -44,7 +44,7 @@ cd ./authorization-code-flow/oauth2-provider
 
 ### Keycloak Admin Console
 
- - [https://localhost:9443/](https://localhost:9443/) `admin/admin`
+[https://localhost:9443/](https://localhost:9443/) `admin/admin`
 
 ## Resource Server
 
@@ -104,6 +104,7 @@ export HTTPS=true && npm start
 ```
 
 Notes:
+
 - The React app includes a `Callback` page at `/callback` — ensure the provider redirect URI matches the app (for example `https://localhost:3000/callback`).
 - Use the realm import file above to review clients, scopes and roles if you need to adjust the Keycloak configuration.
 
