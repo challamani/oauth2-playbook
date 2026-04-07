@@ -36,6 +36,7 @@ OAuth 2.0 was published to simplify delegated authorization for web and mobile a
 - `device-code-flow/` — device flow example: contains a `client/` helper and an `oauth2-provider/` test Keycloak setup.
 	- `device-code-flow/client/create-user.sh` — example script that uses the device flow to obtain a token and call the example API.
 	- `device-code-flow/oauth2-provider/` — local provider compose files, certs and import realms.
+- `mfa-authentication/` — multi-factor authentication (Password + TOTP) with Keycloak: custom browser flow requiring OTP, React client that decodes the ID Token to show MFA evidence.
 - `resource-server/` — example resource server and a sample application under `resource-server/`.
 - `best-practices/` — recommendations and notes for secure OAuth2 deployments.
 

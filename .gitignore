@@ -39,3 +39,4 @@ replay_pid*
 */oauth2-provider/*.pem
 */resource-server/**/*.pem
 */*/src/main/resources/*.pem
+*/*/node_modules/
