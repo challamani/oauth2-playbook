@@ -40,3 +40,5 @@ replay_pid*
 */resource-server/**/*.pem
 */*/src/main/resources/*.pem
 */*/node_modules/
+./*/*/*.log*
+*/*/*.log*

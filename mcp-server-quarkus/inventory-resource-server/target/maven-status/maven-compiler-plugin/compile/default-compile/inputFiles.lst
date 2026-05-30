@@ -1,0 +1,7 @@
+/Users/mani/workspace/oauth2-playbook/mcp-server-quarkus/inventory-resource-server/src/main/java/dev/mcpserver/inventory/resource/filters/AccessController.java
+/Users/mani/workspace/oauth2-playbook/mcp-server-quarkus/inventory-resource-server/src/main/java/dev/mcpserver/inventory/resource/filters/ScopesAllowed.java
+/Users/mani/workspace/oauth2-playbook/mcp-server-quarkus/inventory-resource-server/src/main/java/dev/mcpserver/inventory/resource/model/EventSummary.java
+/Users/mani/workspace/oauth2-playbook/mcp-server-quarkus/inventory-resource-server/src/main/java/dev/mcpserver/inventory/resource/model/ReservationRequest.java
+/Users/mani/workspace/oauth2-playbook/mcp-server-quarkus/inventory-resource-server/src/main/java/dev/mcpserver/inventory/resource/model/ReservationResult.java
+/Users/mani/workspace/oauth2-playbook/mcp-server-quarkus/inventory-resource-server/src/main/java/dev/mcpserver/inventory/resource/model/TicketAvailability.java
+/Users/mani/workspace/oauth2-playbook/mcp-server-quarkus/inventory-resource-server/src/main/java/dev/mcpserver/inventory/resource/resource/InventoryResource.java

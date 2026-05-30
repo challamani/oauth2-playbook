@@ -57,3 +57,7 @@ If you want to learn more about building native executables, please consult <htt
 
 - Qute ([guide](https://quarkus.io/guides/qute)): Offer templating support for web, email, etc in a build time, type-safe way
 - MCP Server - STDIO ([guide](https://docs.quarkiverse.io/quarkus-mcp-server/dev/)): The STDIO transport the MCP server.
+
+
+./mvnw package -Dquarkus.package.jar.type=uber-jar
+claude mcp add my-quarkus-example-tools --scope local -- java -jar /Users/mani/workspace/oauth2-playbook/mcp-server-quarkus/weather/target/weather-1.0.0-SNAPSHOT-runner.jar
