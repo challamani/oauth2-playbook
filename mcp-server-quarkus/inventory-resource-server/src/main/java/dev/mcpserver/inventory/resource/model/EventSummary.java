@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record EventSummary(
         @JsonProperty("eventId") String eventId,
-        @JsonProperty("name") String name,
+        @JsonProperty("title") String title,
         @JsonProperty("city") String city,
         @JsonProperty("date") String date
 ) {}

@@ -69,10 +69,6 @@ They do **not** reconfigure the running MCP server.
 ./generate-access-token.sh --target copilot --file /Users/mani/workspace/oauth2-playbook/mcp.json
 ```
 
-```sh
-./generate-access-token.sh --target cline
-```
-
 ### Client ID Configuration Reference
 
 The MCP server authentication uses a **two-client architecture**:

@@ -85,6 +85,19 @@ if [[ "$FILE_EXPLICIT" == false && "$TARGET_FILE" == "$MCP_JSON_DEFAULT" && "$TA
   TARGET_FILE="$COPILOT_MCP_JSON_DEFAULT"
 fi
 
+if [[ "$TARGET" == "copilot" && "$FILE_EXPLICIT" == true ]]; then
+  echo "Warning: --file is ignored when --target is copilot. Both project and global files will be updated."
+  TARGET_FILE="$COPILOT_MCP_JSON_DEFAULT"
+fi
+
+if [[ "$TARGET" == "copilot" ]]; then
+  if [[ -f "$TARGET_FILE" ]]; then
+    cp "$TARGET_FILE" "$MCP_JSON_DEFAULT" 2>/dev/null || true
+  elif [[ -f "$MCP_JSON_DEFAULT" ]]; then
+    cp "$MCP_JSON_DEFAULT" "$TARGET_FILE" 2>/dev/null || true
+  fi
+fi
+
 if [[ ! -f "$TARGET_FILE" ]]; then
   echo "ERROR: Target file not found: $TARGET_FILE" >&2
   exit 1
@@ -198,13 +211,13 @@ PY
 fi
 
 echo "==> Updating inventory-tools auth in $TARGET_FILE"
-python3 - "$TARGET_FILE" "$MCP_SERVER_URL" "$ACCESS_TOKEN" "$TARGET" <<'PY'
+python3 - "$TARGET_FILE" "$MCP_SERVER_URL" "$ACCESS_TOKEN" "$TARGET" "$COPILOT_MCP_JSON_DEFAULT" "$MCP_JSON_DEFAULT" <<'PY'
 import json
 import sys
 import urllib.error
 import urllib.request
 
-settings_path, mcp_url, token, target = sys.argv[1:5]
+settings_path, mcp_url, token, target, copilot_path, project_path = sys.argv[1:7]
 
 def strip_jsonc_comments(text):
     # Supports // and /* */ comments while preserving string contents.
@@ -404,9 +417,41 @@ if discovered_tools:
     else:
         settings["mcpServers"]["inventory-tools"]["autoApprove"] = discovered_tools
 
-with open(settings_path, "w", encoding="utf-8") as f:
-    json.dump(settings, f, indent=2)
-    f.write("\n")
+if target == "copilot":
+    try:
+        # Read the content of the source file to get its structure
+        with open(settings_path, "r", encoding="utf-8") as f:
+            settings = json.loads(strip_jsonc_comments(f.read()))
+
+        # Update the token in the loaded settings
+        existing_server = settings.setdefault("servers", {}).get("inventory-tools", {})
+        existing_request_init = existing_server.get("requestInit", {}) if isinstance(existing_server, dict) else {}
+        existing_headers = existing_request_init.get("headers", {}) if isinstance(existing_request_init, dict) else {}
+        settings["servers"]["inventory-tools"] = {
+            "url": mcp_url,
+            "requestInit": {
+                "headers": {
+                    **existing_headers,
+                    "Authorization": f"Bearer {token}"
+                }
+            }
+        }
+
+        # Write the updated settings to both files
+        with open(copilot_path, "w", encoding="utf-8") as f:
+            json.dump(settings, f, indent=2)
+            f.write("\\n")
+
+        with open(project_path, "w", encoding="utf-8") as f:
+            json.dump(settings, f, indent=2)
+            f.write("\\n")
+        print("Also updated project mcp.json.")
+    except Exception as ex:
+        print(f"Warning: Failed to update mcp.json files: {ex}")
+else:
+    with open(settings_path, "w", encoding="utf-8") as f:
+        json.dump(settings, f, indent=2)
+        f.write("\n")
 
 print("Target settings updated.")
 if discovered_tools:
@@ -422,8 +467,9 @@ else:
 
 if effective_target != target and target == "mcp-json":
     print("Detected Copilot-style config (servers). Updated servers.inventory-tools only.")
+
+
 PY
 
 echo "Done."
-
 
