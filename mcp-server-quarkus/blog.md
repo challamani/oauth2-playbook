@@ -67,6 +67,34 @@ Keycloak validates during exchange:
 - The MCP server client (`oauth2-playbook-mcp-inventory`) is permitted to perform token exchange
 - The requested scopes are a subset of what the user actually has
 
+### Token Exchange Cannot Escalate Privileges
+
+This is a critical security guarantee of RFC 8693: **token exchange can only narrow scopes, never widen them.**
+
+The scopes available in the exchanged token are strictly bounded by what the authenticated user has in their original agent token — which in turn is bounded by what Keycloak has mapped to that user's role:
+
+```
+Keycloak Role Mapping
+┌──────────────────────────────────┬──────────────────────────────────────────────────────┐
+│ Role                             │ Scopes granted at login                              │
+├──────────────────────────────────┼──────────────────────────────────────────────────────┤
+│ oauth2-playbook-inventory-full   │ mcp:events:read, mcp:tickets:read,                   │
+│ (demo user)                      │ mcp:reservations:write                               │
+├──────────────────────────────────┼──────────────────────────────────────────────────────┤
+│ oauth2-playbook-inventory-       │ mcp:events:read, mcp:tickets:read                    │
+│ readonly (demo-readonly user)    │ (NO reservations:write)                              │
+└──────────────────────────────────┴──────────────────────────────────────────────────────┘
+```
+
+So when `demo-readonly` triggers a `reserveEvent` tool call:
+
+1. Their agent token contains no `mcp:reservations:write` scope — Keycloak never issued it at login
+2. The MCP server's scope check (`requireAuthenticatedUser(reservationsWriteToolScope)`) fails immediately
+3. Even if it didn't, the token exchange request for `api:inventory:reservations:write` would be **rejected by Keycloak** — you cannot exchange for a scope the subject user was never granted
+4. The resource server never even sees the request
+
+The 403 is not just enforced at one layer — it is structurally impossible to bypass at any layer of the chain.
+
 ---
 
 ## How It Is Built
