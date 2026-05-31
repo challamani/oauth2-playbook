@@ -1,0 +1,120 @@
+openapi: 3.1.0
+info:
+  title: Inventory MCP Contracts
+  version: 1.0.0
+  description: Request payload contract schemas used by MCP tools.
+components:
+  schemas:
+
+    # ── Request Schemas ────────────────────────────────────────────────────────
+
+    ListEventsRequest:
+      type: object
+      required:
+        - city
+      additionalProperties: false
+      properties:
+        city:
+          type: string
+          minLength: 1
+          maxLength: 120
+
+    TicketAvailabilityRequest:
+      type: object
+      required:
+        - eventId
+      additionalProperties: false
+      properties:
+        eventId:
+          type: string
+          minLength: 1
+          maxLength: 80
+
+    ReservationRequest:
+      type: object
+      required:
+        - eventId
+        - quantity
+      additionalProperties: false
+      properties:
+        eventId:
+          type: string
+          minLength: 1
+          maxLength: 80
+        quantity:
+          type: integer
+          minimum: 1
+          maximum: 10
+
+    # ── Response Schemas ───────────────────────────────────────────────────────
+
+    EventSummary:
+      type: object
+      description: Summary of a tech conference event.
+      properties:
+        eventId:
+          type: string
+          description: Unique event identifier (e.g. EVT-013).
+          example: EVT-013
+        title:
+          type: string
+          description: Display name of the conference.
+          example: Manchester Java Community Unconference
+        city:
+          type: string
+          description: City where the event takes place.
+          example: Manchester
+        date:
+          type: string
+          format: date
+          description: Event date in ISO-8601 format (YYYY-MM-DD).
+          example: "2026-07-10"
+        description:
+          type: string
+          description: Short description of the event (up to ~100 characters).
+          maxLength: 120
+          example: "Free community-led unconference by jmanc.org where attendees shape the agenda on the day. All welcome!"
+
+    TicketAvailability:
+      type: object
+      description: Ticket stock and pricing for a given event.
+      properties:
+        eventId:
+          type: string
+          description: Unique event identifier.
+          example: EVT-013
+        availableTickets:
+          type: integer
+          description: Number of tickets still available.
+          example: 150
+        ticketPrice:
+          type: number
+          format: double
+          description: Price per ticket in GBP. 0.0 means free.
+          example: 0.0
+
+    ReservationResult:
+      type: object
+      description: Confirmation of a ticket reservation.
+      properties:
+        reservationId:
+          type: string
+          description: Unique reservation identifier.
+          example: RES-471ED830
+        eventId:
+          type: string
+          description: The event that was reserved.
+          example: EVT-013
+        username:
+          type: string
+          description: The authenticated user who made the reservation.
+          example: demo
+        quantity:
+          type: integer
+          description: Number of tickets reserved.
+          example: 1
+        status:
+          type: string
+          description: Reservation status.
+          enum: [CONFIRMED, FAILED]
+          example: CONFIRMED

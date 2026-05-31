@@ -51,22 +51,23 @@ public class InventoryResource {
     private static final Map<String, ReservationResult> RESERVATION_STORE = new ConcurrentHashMap<>();
 
     static {
-        seed("EVT-001", "JavaOne",           "San Francisco", "2026-09-15", 500, 199.99);
-        seed("EVT-002", "Devoxx Belgium",    "Antwerp",       "2026-11-03", 800, 249.99);
-        seed("EVT-003", "QCon London",       "London",        "2026-03-24", 300, 299.99);
-        seed("EVT-004", "SpringOne",         "Las Vegas",     "2026-08-20", 400, 179.99);
-        seed("EVT-005", "KubeCon EU",        "Amsterdam",     "2026-04-01", 600, 349.99);
-        seed("EVT-006", "KubeCon NA",        "Atlanta",       "2026-11-18", 700, 349.99);
-        seed("EVT-007", "VoxxedDays Zurich", "Zurich",        "2026-03-19", 200, 149.99);
-        seed("EVT-008", "Devoxx UK",         "London",        "2026-05-07", 350, 229.99);
-        seed("EVT-009", "Devoxx France",     "Paris",         "2026-04-22", 450, 219.99);
-        seed("EVT-010", "GeeCon",            "Krakow",        "2026-05-22", 250,  99.99);
-        seed("EVT-011", "Devoxx Morocco",    "Casablanca",    "2026-10-14", 300,  79.99);
-        seed("EVT-012", "JNation",           "Lisbon",        "2026-06-04", 280, 129.99);
+        seed("EVT-001", "JavaOne",                          "San Francisco", "2026-09-15", 500, 199.99, "Premier Java conference bringing together developers for sessions on the latest Java innovations.");
+        seed("EVT-002", "Devoxx Belgium",                   "Antwerp",       "2026-11-03", 800, 249.99, "Europe's largest Java and JVM conference with deep-dive talks from top industry speakers.");
+        seed("EVT-003", "QCon London",                      "London",        "2026-03-24", 300, 299.99, "International software conference focused on emerging trends adopted by early adopters and innovators.");
+        seed("EVT-004", "SpringOne",                        "Las Vegas",     "2026-08-20", 400, 179.99, "The definitive Spring and cloud-native Java conference by VMware Tanzu for modern app developers.");
+        seed("EVT-005", "KubeCon EU",                       "Amsterdam",     "2026-04-01", 600, 349.99, "The flagship CNCF conference covering Kubernetes, cloud-native infrastructure, and open source ecosystems.");
+        seed("EVT-006", "KubeCon NA",                       "Atlanta",       "2026-11-18", 700, 349.99, "North America's biggest cloud-native event bringing together Kubernetes and CNCF project communities.");
+        seed("EVT-007", "VoxxedDays Zurich",                "Zurich",        "2026-03-19", 200, 149.99, "A community-driven developer conference with hands-on sessions on Java, microservices, and DevOps.");
+        seed("EVT-008", "Devoxx UK",                        "London",        "2026-05-07", 350, 229.99, "UK edition of Devoxx featuring expert talks on Java, architecture, AI, and cloud technologies.");
+        seed("EVT-009", "Devoxx France",                    "Paris",         "2026-04-22", 450, 219.99, "France's largest developer conference with sessions in French and English on all things JVM and beyond.");
+        seed("EVT-010", "GeeCon",                           "Krakow",        "2026-05-22", 250,  99.99, "Central Europe's beloved Java conference known for high-quality talks and a strong community spirit.");
+        seed("EVT-011", "Devoxx Morocco",                   "Casablanca",    "2026-10-14", 300,  79.99, "Africa's growing Java and open source conference connecting developers across the continent.");
+        seed("EVT-012", "JNation",                          "Lisbon",        "2026-06-04", 280, 129.99, "A welcoming Portuguese Java conference celebrating the JVM ecosystem with top speakers and workshops.");
+        seed("EVT-013", "Manchester Java Community Unconference", "Manchester", "2026-07-10", 150,   0.00, "Free community-led unconference by jmanc.org where attendees shape the agenda on the day. All welcome!");
     }
 
-    private static void seed(String id, String name, String city, String date, int stock, double price) {
-        EVENT_STORE.put(id, new EventSummary(id, name, city, date));
+    private static void seed(String id, String name, String city, String date, int stock, double price, String description) {
+        EVENT_STORE.put(id, new EventSummary(id, name, city, date, description));
         TICKET_STOCK.put(id, new AtomicInteger(stock));
         TICKET_PRICE.put(id, price);
     }

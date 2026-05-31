@@ -1,172 +1,18 @@
 {
   "realm": "oauth2-playbook",
   "enabled": true,
+
   "clients": [
-    {
-      "clientId": "oauth2-playbook-resource-server",
-      "name": "oauth2-playbook-resource-server",
-      "description": "OAuth2 Playbook resource server, clientId using in backend application",
-      "enabled": true,
-      "clientAuthenticatorType": "client-secret",
-      "bearerOnly": true,
-      "consentRequired": true,
-      "standardFlowEnabled": true,
-      "serviceAccountsEnabled": true,
-      "frontchannelLogout": true,
-      "protocol": "openid-connect",
-      "attributes": {
-        "realm_client": "false",
-        "oidc.ciba.grant.enabled": "false",
-        "client.secret.creation.time": "1736115543",
-        "backchannel.logout.session.required": "true",
-        "post.logout.redirect.uris": "+",
-        "display.on.consent.screen": "false",
-        "oauth2.device.authorization.grant.enabled": "false",
-        "backchannel.logout.revoke.offline.tokens": "false"
-      },
-      "fullScopeAllowed": true,
-      "protocolMappers": [
-        {
-          "name": "Client Host",
-          "protocol": "openid-connect",
-          "protocolMapper": "oidc-usersessionmodel-note-mapper",
-          "consentRequired": true,
-          "config": {
-            "user.session.note": "clientHost",
-            "id.token.claim": "true",
-            "access.token.claim": "true",
-            "claim.name": "clientHost",
-            "jsonType.label": "String",
-            "userinfo.token.claim": "true"
-          }
-        },
-        {
-          "name": "Client IP Address",
-          "protocol": "openid-connect",
-          "protocolMapper": "oidc-usersessionmodel-note-mapper",
-          "consentRequired": true,
-          "config": {
-            "user.session.note": "clientAddress",
-            "id.token.claim": "true",
-            "access.token.claim": "true",
-            "claim.name": "clientAddress",
-            "jsonType.label": "String",
-            "userinfo.token.claim": "true"
-          }
-        },
-        {
-          "name": "Client ID",
-          "protocol": "openid-connect",
-          "protocolMapper": "oidc-usersessionmodel-note-mapper",
-          "consentRequired": true,
-          "config": {
-            "user.session.note": "clientId",
-            "id.token.claim": "true",
-            "access.token.claim": "true",
-            "claim.name": "clientId",
-            "jsonType.label": "String",
-            "userinfo.token.claim": "true"
-          }
-        }
-      ],
-      "defaultClientScopes": [
-        "service_account",
-        "basic"
-      ],
-      "optionalClientScopes": [
-        "web-origins",
-        "profile"
-      ]
-    },
-    {
-      "clientId": "oauth2-playbook-auth-code-pkce",
-      "name": "oauth2-playbook-auth-code-pkce",
-      "description": "OAuth2 Playbook client configured for Authorization Code flow with PKCE",
-      "enabled": true,
-      "protocol": "openid-connect",
-      "publicClient": true,
-      "standardFlowEnabled": true,
-      "clientAuthenticatorType": "client-secret",
-      "redirectUris": [
-        "https://localhost:3000/callback"
-      ],
-      "webOrigins": [
-        "https://localhost:3000",
-        "*"
-      ],
-      "notBefore": 0,
-      "bearerOnly": false,
-      "consentRequired": true,
-      "frontchannelLogout": true,
-      "attributes": {
-        "access.token.lifespan": "300",
-        "login_theme": "keycloak",
-        "post.logout.redirect.uris": "https://localhost:3000",
-        "use.refresh.tokens": "true",
-        "backchannel.logout.session.required": "true",
-        "pkce.code.challenge.method": "S256"
-      },
-      "fullScopeAllowed": true,
-      "optionalClientScopes": [
-        "users:read",
-        "web-origins",
-        "profile"
-      ]
-    },
-    {
-      "clientId": "oauth2-playbook-mcp-inventory",
-      "enabled": true,
-      "publicClient": false,
-      "secret": "secret",
-      "directAccessGrantsEnabled": true,
-      "serviceAccountsEnabled": false,
-      "standardFlowEnabled": true,
-      "implicitFlowEnabled": false,
-      "bearerOnly": false,
-      "redirectUris": [
-        "http://localhost:8085/*"
-      ],
-      "webOrigins": [
-        "http://localhost:8085"
-      ],
-      "defaultClientScopes": [
-        "basic",
-        "profile",
-        "openid"
-      ],
-      "optionalClientScopes": [
-        "api:inventory:events:read",
-        "api:inventory:tickets:read",
-        "api:inventory:reservations:write"
-      ],
-      "attributes": {
-        "use.refresh.tokens": "true",
-        "oauth2.token.exchange.grant.enabled": "true",
-        "standard.token.exchange.enabled": "true"
-      },
-      "protocolMappers": [
-        {
-          "name": "inventory-resource-server-audience",
-          "protocol": "openid-connect",
-          "protocolMapper": "oidc-audience-mapper",
-          "consentRequired": false,
-          "config": {
-            "included.client.audience": "oauth2-playbook-inventory-resource-server",
-            "id.token.claim": "false",
-            "access.token.claim": "true",
-            "introspection.token.claim": "true",
-            "userinfo.token.claim": "false"
-          }
-        }
-      ]
-    },
+
     {
       "clientId": "oauth2-playbook-mcp-agent",
+      "description": "Public PKCE client used by AI agents (Copilot, Cline, Cursor) to authenticate end users via Authorization Code + PKCE. Issues tokens with mcp:* scopes and audience oauth2-playbook-mcp-inventory.",
       "enabled": true,
       "publicClient": true,
-      "directAccessGrantsEnabled": true,
       "standardFlowEnabled": true,
       "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
       "bearerOnly": false,
       "redirectUris": [
         "*"
@@ -203,14 +49,61 @@
         }
       ]
     },
+
+    {
+      "clientId": "oauth2-playbook-mcp-inventory",
+      "description": "Confidential client used by the MCP Inventory server to perform token exchange. Receives user tokens from the AI agent and exchanges them for api:inventory:* scoped tokens targeting the resource server.",
+      "enabled": true,
+      "publicClient": false,
+      "secret": "secret",
+      "standardFlowEnabled": false,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "bearerOnly": false,
+      "defaultClientScopes": [
+        "basic",
+        "profile",
+        "openid"
+      ],
+      "optionalClientScopes": [
+        "api:inventory:events:read",
+        "api:inventory:tickets:read",
+        "api:inventory:reservations:write"
+      ],
+      "attributes": {
+        "use.refresh.tokens": "true",
+        "oauth2.token.exchange.grant.enabled": "true",
+        "standard.token.exchange.enabled": "true"
+      },
+      "protocolMappers": [
+        {
+          "name": "inventory-resource-server-audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.client.audience": "oauth2-playbook-inventory-resource-server",
+            "id.token.claim": "false",
+            "access.token.claim": "true",
+            "introspection.token.claim": "true",
+            "userinfo.token.claim": "false"
+          }
+        }
+      ]
+    },
+
     {
       "clientId": "oauth2-playbook-inventory-resource-server",
+      "description": "Bearer-only resource server that validates exchanged tokens. Enforces api:inventory:* scopes per endpoint via @ScopesAllowed. Audience must match this client-id.",
       "enabled": true,
       "publicClient": false,
       "secret": "secret",
       "bearerOnly": true,
       "standardFlowEnabled": false,
+      "implicitFlowEnabled": false,
       "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
       "defaultClientScopes": [
         "basic",
         "profile",
@@ -222,67 +115,14 @@
         "api:inventory:reservations:write"
       ]
     }
+
   ],
+
   "clientScopes": [
-    {
-      "name": "service_account",
-      "description": "Specific scope for a client enabled for service accounts",
-      "protocol": "openid-connect",
-      "attributes": {
-        "include.in.token.scope": "false",
-        "display.on.consent.screen": "false"
-      },
-      "protocolMappers": [
-        {
-          "name": "Client IP Address",
-          "protocol": "openid-connect",
-          "protocolMapper": "oidc-usersessionmodel-note-mapper",
-          "consentRequired": false,
-          "config": {
-            "user.session.note": "clientAddress",
-            "introspection.token.claim": "true",
-            "userinfo.token.claim": "true",
-            "id.token.claim": "true",
-            "access.token.claim": "true",
-            "claim.name": "clientAddress",
-            "jsonType.label": "String"
-          }
-        },
-        {
-          "name": "Client ID",
-          "protocol": "openid-connect",
-          "protocolMapper": "oidc-usersessionmodel-note-mapper",
-          "consentRequired": true,
-          "config": {
-            "user.session.note": "client_id",
-            "introspection.token.claim": "true",
-            "userinfo.token.claim": "true",
-            "id.token.claim": "true",
-            "access.token.claim": "true",
-            "claim.name": "client_id",
-            "jsonType.label": "String"
-          }
-        },
-        {
-          "name": "Client Host",
-          "protocol": "openid-connect",
-          "protocolMapper": "oidc-usersessionmodel-note-mapper",
-          "consentRequired": true,
-          "config": {
-            "user.session.note": "clientHost",
-            "introspection.token.claim": "true",
-            "userinfo.token.claim": "true",
-            "id.token.claim": "true",
-            "access.token.claim": "true",
-            "claim.name": "clientHost",
-            "jsonType.label": "String"
-          }
-        }
-      ]
-    },
+
     {
       "name": "basic",
-      "description": "OpenID Connect scope for add all basic claims to the token",
+      "description": "OpenID Connect scope for basic claims",
       "protocol": "openid-connect",
       "attributes": {
         "include.in.token.scope": "false",
@@ -316,9 +156,10 @@
         }
       ]
     },
+
     {
       "name": "web-origins",
-      "description": "OpenID Connect scope for add allowed web origins to the access token",
+      "description": "Adds allowed web origins to the access token",
       "protocol": "openid-connect",
       "attributes": {
         "include.in.token.scope": "false",
@@ -335,6 +176,7 @@
         }
       ]
     },
+
     {
       "name": "profile",
       "description": "OpenID Connect built-in scope: profile",
@@ -360,20 +202,6 @@
           }
         },
         {
-          "name": "profile",
-          "protocol": "openid-connect",
-          "protocolMapper": "oidc-usermodel-attribute-mapper",
-          "consentRequired": false,
-          "config": {
-            "user.attribute": "profile",
-            "id.token.claim": "true",
-            "access.token.claim": "true",
-            "claim.name": "profile",
-            "jsonType.label": "String",
-            "userinfo.token.claim": "true"
-          }
-        },
-        {
           "name": "family name",
           "protocol": "openid-connect",
           "protocolMapper": "oidc-usermodel-property-mapper",
@@ -383,20 +211,6 @@
             "id.token.claim": "true",
             "access.token.claim": "true",
             "claim.name": "family_name",
-            "jsonType.label": "String",
-            "userinfo.token.claim": "true"
-          }
-        },
-        {
-          "name": "middle name",
-          "protocol": "openid-connect",
-          "protocolMapper": "oidc-usermodel-attribute-mapper",
-          "consentRequired": false,
-          "config": {
-            "user.attribute": "middleName",
-            "id.token.claim": "true",
-            "access.token.claim": "true",
-            "claim.name": "middle_name",
             "jsonType.label": "String",
             "userinfo.token.claim": "true"
           }
@@ -428,79 +242,84 @@
         }
       ]
     },
+
     {
-      "name": "users:read",
+      "name": "openid",
+      "description": "OpenID Connect built-in scope: openid",
       "protocol": "openid-connect",
       "attributes": {
-        "include.in.token.scope": "true"
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "false"
       },
-      "protocolMappers": [
-        {
-          "name": "audience",
-          "protocol": "openid-connect",
-          "protocolMapper": "oidc-audience-mapper",
-          "config": {
-            "included.client.audience": "oauth2-playbook-resource-server",
-            "id.token.claim": "true",
-            "access.token.claim": "true"
-          }
-        }
-      ]
+      "protocolMappers": []
     },
+
     {
       "name": "mcp:events:read",
+      "description": "Allows AI agent to invoke listTopEventsByCity MCP tool. Granted to inventory-full-access and inventory-readonly roles.",
       "protocol": "openid-connect",
       "attributes": {
         "include.in.token.scope": "true"
       },
       "protocolMappers": []
     },
+
     {
       "name": "mcp:tickets:read",
+      "description": "Allows AI agent to invoke availableTicketsAndPrice MCP tool. Granted to inventory-full-access and inventory-readonly roles.",
       "protocol": "openid-connect",
       "attributes": {
         "include.in.token.scope": "true"
       },
       "protocolMappers": []
     },
+
     {
       "name": "mcp:reservations:write",
+      "description": "Allows AI agent to invoke reserveEvent MCP tool. Restricted to inventory-full-access role only.",
       "protocol": "openid-connect",
       "attributes": {
         "include.in.token.scope": "true"
       },
       "protocolMappers": []
     },
+
     {
       "name": "api:inventory:events:read",
+      "description": "Access to GET /api/inventory/events. Issued via token exchange. Enforced by @ScopesAllowed. Granted to full-access and readonly roles.",
       "protocol": "openid-connect",
       "attributes": {
         "include.in.token.scope": "true"
       },
       "protocolMappers": []
     },
+
     {
       "name": "api:inventory:tickets:read",
+      "description": "Access to GET /api/inventory/events/{id}/tickets. Issued via token exchange. Enforced by @ScopesAllowed. Granted to full-access and readonly roles.",
       "protocol": "openid-connect",
       "attributes": {
         "include.in.token.scope": "true"
       },
       "protocolMappers": []
     },
+
     {
       "name": "api:inventory:reservations:write",
+      "description": "Access to POST /api/inventory/reservations. Issued via token exchange. Enforced by @ScopesAllowed. Restricted to inventory-full-access role only.",
       "protocol": "openid-connect",
       "attributes": {
         "include.in.token.scope": "true"
       },
       "protocolMappers": []
     }
+
   ],
+
   "defaultOptionalClientScopes": [
-    "users:read",
-    "offline_access",
-    "service_account"
+    "offline_access"
   ],
+
   "browserSecurityHeaders": {
     "contentSecurityPolicyReportOnly": "",
     "xContentTypeOptions": "nosniff",
@@ -511,44 +330,69 @@
     "xXSSProtection": "1; mode=block",
     "strictTransportSecurity": "max-age=31536000; includeSubDomains"
   },
+
   "scopeMappings": [
     {
-      "clientScope": "users:read",
+      "clientScope": "mcp:events:read",
       "roles": [
-        "oauth2-playbook-readonly"
+        "oauth2-playbook-inventory-full-access",
+        "oauth2-playbook-inventory-readonly"
+      ]
+    },
+    {
+      "clientScope": "mcp:tickets:read",
+      "roles": [
+        "oauth2-playbook-inventory-full-access",
+        "oauth2-playbook-inventory-readonly"
       ]
     },
     {
       "clientScope": "mcp:reservations:write",
       "roles": [
-        "oauth2-playbook-readonly"
+        "oauth2-playbook-inventory-full-access"
+      ]
+    },
+    {
+      "clientScope": "api:inventory:events:read",
+      "roles": [
+        "oauth2-playbook-inventory-full-access",
+        "oauth2-playbook-inventory-readonly"
+      ]
+    },
+    {
+      "clientScope": "api:inventory:tickets:read",
+      "roles": [
+        "oauth2-playbook-inventory-full-access",
+        "oauth2-playbook-inventory-readonly"
       ]
     },
     {
       "clientScope": "api:inventory:reservations:write",
       "roles": [
-        "oauth2-playbook-readonly"
+        "oauth2-playbook-inventory-full-access"
       ]
     }
   ],
+
   "roles": {
     "realm": [
       {
-        "name": "oauth2-playbook-readonly",
+        "name": "oauth2-playbook-inventory-full-access",
         "clientRole": false,
-        "description": "Full role granting access to all inventory scopes including reservations",
+        "description": "Full inventory access. Grants all mcp:* and api:inventory:* scopes including reservations:write. Assigned to demo user.",
         "composite": false,
         "attributes": {}
       },
       {
-        "name": "oauth2-playbook-events-readonly",
+        "name": "oauth2-playbook-inventory-readonly",
         "clientRole": false,
-        "description": "Read-only role granting access to events and tickets only, NOT reservations:write",
+        "description": "Read-only inventory access. Grants events:read and tickets:read scopes only. Does NOT grant reservations:write. Assigned to demo-readonly user for 403 testing.",
         "composite": false,
         "attributes": {}
       }
     ]
   },
+
   "users": [
     {
       "username": "demo",
@@ -568,7 +412,7 @@
         }
       ],
       "realmRoles": [
-        "oauth2-playbook-readonly"
+        "oauth2-playbook-inventory-full-access"
       ]
     },
     {
@@ -589,7 +433,7 @@
         }
       ],
       "realmRoles": [
-        "oauth2-playbook-events-readonly"
+        "oauth2-playbook-inventory-readonly"
       ]
     }
   ]
