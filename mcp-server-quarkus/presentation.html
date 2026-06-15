@@ -305,6 +305,195 @@
       font-size: .78rem;
       color: var(--muted);
     }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       Animated flow slide (slide-anim)
+       ═══════════════════════════════════════════════════════════════════ */
+
+    /* Node boxes */
+    .af-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+    .af-box {
+      border-radius: 10px;
+      border: 2px solid var(--border);
+      padding: 10px 16px;
+      font-size: .78rem;
+      font-weight: 700;
+      text-align: center;
+      line-height: 1.4;
+      min-width: 120px;
+      transition: border-color .4s ease, box-shadow .4s ease, background .4s ease;
+    }
+    .af-box.lit {
+      box-shadow: 0 0 14px 2px currentColor;
+    }
+    .af-box-copilot  { color: var(--accent5); border-color: rgba(188,140,255,.4); background: rgba(188,140,255,.08); }
+    .af-box-mcp      { color: var(--accent1); border-color: rgba(88,166,255,.4);  background: rgba(88,166,255,.08);  }
+    .af-box-kc       { color: var(--accent3); border-color: rgba(210,153,34,.4);  background: rgba(210,153,34,.08);  }
+    .af-box-rs       { color: var(--accent2); border-color: rgba(63,185,80,.4);   background: rgba(63,185,80,.08);   }
+
+    .af-box-copilot.lit { border-color: var(--accent5); }
+    .af-box-mcp.lit     { border-color: var(--accent1); }
+    .af-box-kc.lit      { border-color: var(--accent3); }
+    .af-box-rs.lit      { border-color: var(--accent2); }
+
+    .af-label {
+      font-size: .68rem;
+      color: var(--muted);
+      text-align: center;
+      max-width: 130px;
+    }
+
+    /* Arrow + token pill row */
+    .af-arrow-row {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      position: relative;
+    }
+    .af-line {
+      height: 2px;
+      background: var(--border);
+      flex: 1;
+      border-radius: 1px;
+      position: relative;
+      overflow: visible;
+    }
+    /* animated fill */
+    .af-line::after {
+      content: '';
+      position: absolute;
+      left: 0; top: 0;
+      height: 100%;
+      width: 0;
+      border-radius: 1px;
+      transition: width .7s ease;
+    }
+    .af-line.filled-blue::after   { background: var(--accent1); width: 100%; }
+    .af-line.filled-green::after  { background: var(--accent2); width: 100%; }
+    .af-line.filled-yellow::after { background: var(--accent3); width: 100%; }
+    .af-line.filled-purple::after { background: var(--accent5); width: 100%; }
+    /* reverse direction arrows */
+    .af-line.rev::after { left: auto; right: 0; }
+
+    .af-arrowhead {
+      font-size: .9rem;
+      color: var(--border);
+      transition: color .4s ease;
+      flex-shrink: 0;
+    }
+    .af-arrowhead.lit-blue   { color: var(--accent1); }
+    .af-arrowhead.lit-green  { color: var(--accent2); }
+    .af-arrowhead.lit-yellow { color: var(--accent3); }
+    .af-arrowhead.lit-purple { color: var(--accent5); }
+
+    /* Token pill floating above arrow */
+    .af-pill-row {
+      display: flex;
+      justify-content: center;
+      min-height: 22px;
+      margin-bottom: 2px;
+    }
+    .af-pill {
+      font-size: .66rem;
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity .5s ease, transform .5s ease;
+      letter-spacing: .3px;
+    }
+    .af-pill.show { opacity: 1; transform: translateY(0); }
+    .af-pill-blue   { background: rgba(88,166,255,.18); color: var(--accent1); border: 1px solid rgba(88,166,255,.4); }
+    .af-pill-green  { background: rgba(63,185,80,.18);  color: var(--accent2); border: 1px solid rgba(63,185,80,.4); }
+    .af-pill-yellow { background: rgba(210,153,34,.18); color: var(--accent3); border: 1px solid rgba(210,153,34,.4); }
+    .af-pill-purple { background: rgba(188,140,255,.18);color: var(--accent5); border: 1px solid rgba(188,140,255,.4);}
+
+    /* Scope badge cluster */
+    .af-scope-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      justify-content: center;
+      min-height: 22px;
+      margin-top: 2px;
+    }
+    .af-scope {
+      font-size: .6rem;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 4px;
+      opacity: 0;
+      transform: scale(.85);
+      transition: opacity .4s ease, transform .4s ease;
+      font-family: 'Cascadia Code', 'Fira Code', monospace;
+    }
+    .af-scope.show { opacity: 1; transform: scale(1); }
+    .af-scope-blue   { background: rgba(88,166,255,.15); color: var(--accent1); }
+    .af-scope-green  { background: rgba(63,185,80,.15);  color: var(--accent2); }
+    .af-scope-yellow { background: rgba(210,153,34,.15); color: var(--accent3); }
+
+    /* Step caption panel */
+    #af-caption {
+      min-height: 46px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: .8rem;
+      line-height: 1.5;
+      color: #c9d1d9;
+      transition: opacity .3s ease;
+    }
+    #af-caption strong { color: var(--text); }
+
+    /* Replay button */
+    #af-replay {
+      background: rgba(88,166,255,.12);
+      border: 1px solid rgba(88,166,255,.35);
+      color: var(--accent1);
+      border-radius: 8px;
+      padding: 6px 20px;
+      font-size: .8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s;
+      align-self: flex-end;
+    }
+    #af-replay:hover { background: rgba(88,166,255,.25); }
+
+    /* Main layout for anim slide */
+    #slide-anim .af-diagram {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      gap: 4px;
+      justify-content: center;
+    }
+    /* Node row */
+    .af-node-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+    .af-spacer { flex: 1; }
+
+    /* Between-node connector */
+    .af-connector {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+    }
+
   </style>
 </head>
 <body>
@@ -521,6 +710,134 @@
       </div>
     </div>
   </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════ SLIDE ANIM -->
+  <div class="slide" id="slide-anim" data-accent="blue">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div class="tag tag-blue">Live Flow</div>
+        <h2 style="margin-top:4px">End-to-End Request &amp; Token Journey</h2>
+      </div>
+      <button id="af-replay" onclick="afReplay()">⟳ Replay</button>
+    </div>
+
+    <!-- Diagram -->
+    <div class="af-diagram">
+
+      <!-- Node row -->
+      <div class="af-node-row">
+        <div class="af-node">
+          <div class="af-box af-box-copilot" id="af-copilot">🤖 GitHub<br/>Copilot</div>
+          <div class="af-label">MCP Client<br/>(Public)</div>
+        </div>
+
+        <div class="af-connector" id="af-conn-cm">
+          <!-- Step 1 pill: Auth Code request -->
+          <div class="af-pill-row">
+            <span class="af-pill af-pill-purple" id="af-p1">① Auth Code + PKCE request</span>
+          </div>
+          <div class="af-arrow-row">
+            <div class="af-line" id="af-l1a"></div>
+            <span class="af-arrowhead" id="af-ah1">▶</span>
+            <div class="af-line rev" id="af-l1b" style="flex:.4"></div>
+          </div>
+          <!-- Step 3 pill: access token back -->
+          <div class="af-pill-row">
+            <span class="af-pill af-pill-blue" id="af-p3">③ access_token (mcp:* scopes)</span>
+          </div>
+          <!-- Step 3 scopes -->
+          <div class="af-scope-row">
+            <span class="af-scope af-scope-blue" id="af-s1">mcp:events:read</span>
+            <span class="af-scope af-scope-blue" id="af-s2">mcp:tickets:read</span>
+            <span class="af-scope af-scope-blue" id="af-s3">mcp:reservations:write</span>
+          </div>
+        </div>
+
+        <div class="af-node">
+          <div class="af-box af-box-mcp" id="af-mcp">🔧 MCP<br/>Server</div>
+          <div class="af-label">Quarkus :8085</div>
+        </div>
+
+        <div class="af-connector" id="af-conn-mr">
+          <!-- Step 5 pill: exchanged token to RS -->
+          <div class="af-pill-row">
+            <span class="af-pill af-pill-green" id="af-p5">⑤ exchanged_token (api:* scopes)</span>
+          </div>
+          <div class="af-arrow-row">
+            <div class="af-line" id="af-l5"></div>
+            <span class="af-arrowhead" id="af-ah5">▶</span>
+          </div>
+          <!-- Step 5 scopes -->
+          <div class="af-scope-row">
+            <span class="af-scope af-scope-green" id="af-s4">api:inventory:events:read</span>
+            <span class="af-scope af-scope-green" id="af-s5">api:inventory:reservations:write</span>
+          </div>
+          <!-- Step 6 pill: response back -->
+          <div class="af-pill-row" style="margin-top:3px">
+            <span class="af-pill af-pill-green" id="af-p6">⑥ API response → Copilot</span>
+          </div>
+        </div>
+
+        <div class="af-node">
+          <div class="af-box af-box-rs" id="af-rs">📦 Resource<br/>Server</div>
+          <div class="af-label">Spring Boot :9080</div>
+        </div>
+      </div><!-- /node-row -->
+
+      <!-- Keycloak row — centred under MCP server -->
+      <div style="display:flex;justify-content:center;margin-top:2px">
+        <div style="display:flex;flex-direction:column;align-items:center;width:320px">
+
+          <!-- Vertical connector from MCP down to Keycloak -->
+          <div style="display:flex;gap:30px">
+            <!-- left column: auth code flow (step 1b / step 2) -->
+            <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
+              <div class="af-pill-row"><span class="af-pill af-pill-purple" id="af-p1b">① redirect → login</span></div>
+              <div class="af-arrow-row" style="flex-direction:column;height:32px;width:2px;position:relative">
+                <div style="width:2px;height:100%;background:var(--border);border-radius:1px;position:relative;overflow:hidden">
+                  <div id="af-lv1" style="position:absolute;top:0;left:0;width:100%;height:0;background:var(--accent5);border-radius:1px;transition:height .7s ease;"></div>
+                </div>
+                <span style="font-size:.9rem;color:var(--border);transition:color .4s" id="af-ahv1">▼</span>
+              </div>
+              <div class="af-pill-row"><span class="af-pill af-pill-purple" id="af-p2">② code returned</span></div>
+              <div class="af-arrow-row" style="flex-direction:column;height:32px;width:2px">
+                <div style="width:2px;height:100%;background:var(--border);border-radius:1px;position:relative;overflow:hidden">
+                  <div id="af-lv2" style="position:absolute;bottom:0;left:0;width:100%;height:0;background:var(--accent5);border-radius:1px;transition:height .7s ease;"></div>
+                </div>
+                <span style="font-size:.9rem;color:var(--border);transition:color .4s;transform:rotate(180deg);display:block" id="af-ahv2">▼</span>
+              </div>
+            </div>
+            <!-- right column: token exchange (step 4) -->
+            <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
+              <div class="af-pill-row"><span class="af-pill af-pill-yellow" id="af-p4a">④ Token Exchange request</span></div>
+              <div class="af-arrow-row" style="flex-direction:column;height:32px;width:2px">
+                <div style="width:2px;height:100%;background:var(--border);border-radius:1px;position:relative;overflow:hidden">
+                  <div id="af-lv3" style="position:absolute;top:0;left:0;width:100%;height:0;background:var(--accent3);border-radius:1px;transition:height .7s ease;"></div>
+                </div>
+                <span style="font-size:.9rem;color:var(--border);transition:color .4s" id="af-ahv3">▼</span>
+              </div>
+              <div class="af-pill-row"><span class="af-pill af-pill-yellow" id="af-p4b">④ api:* token issued</span></div>
+              <div class="af-arrow-row" style="flex-direction:column;height:32px;width:2px">
+                <div style="width:2px;height:100%;background:var(--border);border-radius:1px;position:relative;overflow:hidden">
+                  <div id="af-lv4" style="position:absolute;bottom:0;left:0;width:100%;height:0;background:var(--accent3);border-radius:1px;transition:height .7s ease;"></div>
+                </div>
+                <span style="font-size:.9rem;color:var(--border);transition:color .4s;transform:rotate(180deg);display:block" id="af-ahv4">▼</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="af-box af-box-kc" id="af-kc" style="width:200px;text-align:center">🔐 Keycloak<br/><span style="font-weight:400;font-size:.7rem">OAuth 2.1 Provider :9443</span></div>
+        </div>
+      </div><!-- /keycloak row -->
+
+    </div><!-- /af-diagram -->
+
+    <!-- Caption -->
+    <div id="af-caption">Waiting to start…&nbsp;<span style="color:var(--muted);font-size:.75rem">Click ⟳ Replay or wait for auto-start</span></div>
+
+  </div><!-- /slide-anim -->
+
 
   <!-- ═══════════════════════════════════════════════════════ SLIDE 7 -->
   <div class="slide" id="slide-7" data-accent="blue">
@@ -772,16 +1089,18 @@ sub:   <span class="str">manikanta</span>   <span class="cmt">← identity prese
 <div id="progress-bar-wrap"><div id="progress-bar"></div></div>
 <div id="nav">
   <button class="nav-btn" id="btn-prev" disabled onclick="move(-1)">← Previous</button>
-  <span id="counter">1 / 11</span>
+  <span id="counter">1 / 12</span>
   <button class="nav-btn" id="btn-next" onclick="move(1)">Next →</button>
 </div>
 
 <script>
+  /* ── Slide navigation ────────────────────────────────────────── */
   const slides = document.querySelectorAll('.slide');
   const total   = slides.length;
   let   current = 0;
 
   function move(dir) {
+    const leaving = slides[current];
     slides[current].classList.remove('active');
     current = Math.max(0, Math.min(total - 1, current + dir));
     slides[current].classList.add('active');
@@ -790,16 +1109,168 @@ sub:   <span class="str">manikanta</span>   <span class="cmt">← identity prese
     document.getElementById('btn-next').disabled = current === total - 1;
     document.getElementById('progress-bar').style.width =
       `${((current + 1) / total) * 100}%`;
+    // auto-start animation when landing on the anim slide
+    if (slides[current].id === 'slide-anim') afReplay();
   }
 
-  // Keyboard navigation
   document.addEventListener('keydown', e => {
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') move(1);
     if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')                     move(-1);
   });
 
-  // Init progress bar
   move(0);
+
+  /* ── Animated flow slide ─────────────────────────────────────── */
+  let afTimer = null;
+
+  const STEPS = [
+    {
+      caption: '① <strong>GitHub Copilot</strong> reads <code>/.well-known/oauth-authorization-server</code> and initiates Authorization Code + PKCE flow — user is redirected to Keycloak for login.',
+      fn: () => {
+        lit('af-copilot', 'purple');
+        lit('af-ahv1', 'purple', true);
+        fillV('af-lv1', 'purple');
+        show('af-p1b');
+        show('af-p1');
+        fillH('af-l1a', 'purple');
+        fillH('af-l1b', 'purple');
+        arrow('af-ah1', 'purple');
+      }
+    },
+    {
+      caption: '② Keycloak validates login credentials and issues an <strong>authorization code</strong> back to Copilot's dynamic localhost callback (PKCE: code_challenge verified).',
+      fn: () => {
+        lit('af-kc', 'yellow');
+        fillV('af-lv2', 'purple', true);
+        arrow('af-ahv2', 'purple', true);
+        show('af-p2');
+      }
+    },
+    {
+      caption: '③ Copilot exchanges the code + <strong>code_verifier</strong> for an <strong>access token</strong> scoped to <code>mcp:*</code> — the MCP layer scopes. Token is sent with every MCP request.',
+      fn: () => {
+        lit('af-mcp', 'blue');
+        show('af-p3');
+        show('af-s1'); show('af-s2'); show('af-s3');
+      }
+    },
+    {
+      caption: '④ MCP Server validates the inbound token (issuer, audience, scopes). Before calling the resource server it performs a <strong>Token Exchange (RFC 8693)</strong> — presenting the mcp:* token to Keycloak to receive a narrowly scoped <code>api:inventory:*</code> token.',
+      fn: () => {
+        lit('af-mcp', 'yellow');
+        lit('af-kc', 'yellow');
+        fillV('af-lv3', 'yellow');
+        arrow('af-ahv3', 'yellow', false);
+        fillV('af-lv4', 'yellow', true);
+        arrow('af-ahv4', 'yellow', true);
+        show('af-p4a'); show('af-p4b');
+      }
+    },
+    {
+      caption: '⑤ MCP Server forwards the <strong>exchanged token</strong> (audience: resource server, scope: api:inventory:*) to the Resource Server. The raw agent token never reaches the backend.',
+      fn: () => {
+        lit('af-rs', 'green');
+        fillH('af-l5', 'green');
+        arrow('af-ah5', 'green');
+        show('af-p5');
+        show('af-s4'); show('af-s5');
+      }
+    },
+    {
+      caption: '⑥ Resource Server validates the exchanged token, enforces <strong>scope-based access control</strong> per endpoint, and returns the API response back through the MCP Server to Copilot. ✅',
+      fn: () => {
+        lit('af-rs', 'green');
+        show('af-p6');
+        lit('af-copilot', 'purple');
+      }
+    }
+  ];
+
+  function lit(id, color, reverse) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.add('lit');
+    if (color) el.classList.add('lit-' + color);
+  }
+  function fillH(id, color) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.add('filled-' + color);
+  }
+  function fillV(id, color, up) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.style.height = '100%';
+    el.style.background = color === 'purple' ? 'var(--accent5)'
+                        : color === 'yellow' ? 'var(--accent3)'
+                        : color === 'green'  ? 'var(--accent2)'
+                        :                      'var(--accent1)';
+    if (up) { el.style.top = 'auto'; el.style.bottom = '0'; }
+  }
+  function arrow(id, color, rotate) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.add('lit-' + color);
+  }
+  function show(id) {
+    const el = document.getElementById(id);
+    if (el) el.classList.add('show');
+  }
+  function setCaption(html) {
+    const el = document.getElementById('af-caption');
+    if (el) { el.style.opacity = '0'; setTimeout(() => { el.innerHTML = html; el.style.opacity = '1'; }, 200); }
+  }
+
+  function afReset() {
+    if (afTimer) { clearTimeout(afTimer); afTimer = null; }
+    // remove all dynamic classes/styles
+    ['af-copilot','af-mcp','af-kc','af-rs'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('lit','lit-blue','lit-green','lit-yellow','lit-purple');
+    });
+    ['af-l1a','af-l1b','af-l5'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.className = 'af-line' + (id === 'af-l1b' ? ' rev' : '');
+    });
+    ['af-ah1','af-ah5'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.className = 'af-arrowhead';
+    });
+    ['af-ahv1','af-ahv2','af-ahv3','af-ahv4'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.className = '';
+    });
+    ['af-lv1','af-lv2','af-lv3','af-lv4'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) { el.style.height = '0'; el.style.top = '0'; el.style.bottom = 'auto'; }
+    });
+    // hide pills & scopes
+    ['af-p1','af-p1b','af-p2','af-p3','af-p4a','af-p4b','af-p5','af-p6'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('show');
+    });
+    ['af-s1','af-s2','af-s3','af-s4','af-s5'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('show');
+    });
+    const cap = document.getElementById('af-caption');
+    if (cap) cap.innerHTML = 'Starting…';
+  }
+
+  function afPlay(stepIdx) {
+    if (stepIdx >= STEPS.length) {
+      setCaption('✅ <strong>End-to-end flow complete!</strong> Click ⟳ Replay to watch again.');
+      return;
+    }
+    setCaption(STEPS[stepIdx].caption);
+    STEPS[stepIdx].fn();
+    afTimer = setTimeout(() => afPlay(stepIdx + 1), 2200);
+  }
+
+  function afReplay() {
+    afReset();
+    afTimer = setTimeout(() => afPlay(0), 500);
+  }
 </script>
 </body>
 </html>
