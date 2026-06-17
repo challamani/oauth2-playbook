@@ -1,0 +1,252 @@
+openapi: 3.1.0
+info:
+  title: Inventory Resource Server API
+  version: 1.0.0
+  description: |
+    Protected REST API for the tech conference inventory system.
+    All endpoints require a valid Bearer token with the appropriate `api:inventory:*` scope,
+    issued via Token Exchange from the MCP Server through Keycloak.
+
+servers:
+  - url: http://localhost:9080
+    description: Local development
+
+security:
+  - bearerAuth: []
+
+paths:
+
+  /api/inventory/events:
+    get:
+      summary: List upcoming tech conference events
+      description: |
+        Returns up to `limit` events filtered by `city`, sorted by date ascending.
+        Requires scope: `api:inventory:events:read`
+      operationId: listEvents
+      parameters:
+        - name: city
+          in: query
+          required: false
+          description: Filter events by city name (case-insensitive).
+          schema:
+            type: string
+            example: Manchester
+        - name: limit
+          in: query
+          required: false
+          description: Maximum number of events to return. Defaults to 10.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+        - name: sort
+          in: query
+          required: false
+          description: Sort order. Currently only `date,asc` is supported.
+          schema:
+            type: string
+            example: date,asc
+      responses:
+        "200":
+          description: List of events matching the filter criteria.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EventSummary'
+              example:
+                - eventId: EVT-013
+                  title: Manchester Java Community Unconference
+                  city: Manchester
+                  date: "2026-07-10"
+                  description: "Free community-led unconference by jmanc.org where attendees shape the agenda on the day. All welcome!"
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "403":
+          $ref: '#/components/responses/Forbidden'
+
+  /api/inventory/events/{eventId}/tickets:
+    get:
+      summary: Get ticket availability and price for an event
+      description: |
+        Returns the current available ticket count and price for the given event.
+        Requires scope: `api:inventory:tickets:read`
+      operationId: getTicketAvailability
+      parameters:
+        - name: eventId
+          in: path
+          required: true
+          description: Unique event identifier.
+          schema:
+            type: string
+            example: EVT-013
+      responses:
+        "200":
+          description: Ticket availability and price.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketAvailability'
+              example:
+                eventId: EVT-013
+                availableTickets: 150
+                ticketPrice: 0.0
+        "404":
+          description: Event not found.
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "403":
+          $ref: '#/components/responses/Forbidden'
+
+  /api/inventory/reservations:
+    post:
+      summary: Reserve tickets for an event
+      description: |
+        Reserves the requested number of tickets for the given event on behalf of the authenticated user.
+        Requires scope: `api:inventory:reservations:write`
+      operationId: reserveTickets
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReservationRequest'
+            example:
+              eventId: EVT-013
+              quantity: 1
+      responses:
+        "200":
+          description: Reservation confirmed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReservationResult'
+              example:
+                reservationId: RES-471ED830
+                eventId: EVT-013
+                username: demo
+                quantity: 1
+                status: CONFIRMED
+        "400":
+          description: Invalid request (bad eventId or quantity).
+        "404":
+          description: Event not found.
+        "409":
+          description: Not enough tickets available.
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "403":
+          $ref: '#/components/responses/Forbidden'
+
+components:
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        JWT issued by Keycloak via Token Exchange.
+        Required audience: `oauth2-playbook-mcp-inventory`
+        Required scopes depend on the endpoint (see individual operations).
+
+  schemas:
+
+    EventSummary:
+      type: object
+      description: Summary of a tech conference event.
+      properties:
+        eventId:
+          type: string
+          description: Unique event identifier.
+          example: EVT-013
+        title:
+          type: string
+          description: Display name of the conference.
+          example: Manchester Java Community Unconference
+        city:
+          type: string
+          description: City where the event takes place.
+          example: Manchester
+        date:
+          type: string
+          format: date
+          description: Event date in ISO-8601 format (YYYY-MM-DD).
+          example: "2026-07-10"
+        description:
+          type: string
+          description: Short description of the event (up to ~100 characters).
+          maxLength: 120
+          example: "Free community-led unconference by jmanc.org where attendees shape the agenda on the day. All welcome!"
+
+    TicketAvailability:
+      type: object
+      description: Ticket stock and pricing for a given event.
+      properties:
+        eventId:
+          type: string
+          description: Unique event identifier.
+          example: EVT-013
+        availableTickets:
+          type: integer
+          description: Number of tickets still available.
+          example: 150
+        ticketPrice:
+          type: number
+          format: double
+          description: Price per ticket. 0.0 means free.
+          example: 0.0
+
+    ReservationRequest:
+      type: object
+      required:
+        - eventId
+        - quantity
+      properties:
+        eventId:
+          type: string
+          description: Unique event identifier to reserve tickets for.
+          example: EVT-013
+        quantity:
+          type: integer
+          description: Number of tickets to reserve.
+          minimum: 1
+          maximum: 10
+          example: 1
+
+    ReservationResult:
+      type: object
+      description: Confirmation of a ticket reservation.
+      properties:
+        reservationId:
+          type: string
+          description: Unique reservation identifier.
+          example: RES-471ED830
+        eventId:
+          type: string
+          description: The event that was reserved.
+          example: EVT-013
+        username:
+          type: string
+          description: The authenticated user who made the reservation.
+          example: demo
+        quantity:
+          type: integer
+          description: Number of tickets reserved.
+          example: 1
+        status:
+          type: string
+          description: Reservation status.
+          enum: [CONFIRMED, FAILED]
+          example: CONFIRMED
+
+  responses:
+    Unauthorized:
+      description: Missing or invalid Bearer token.
+    Forbidden:
+      description: |
+        Valid token but insufficient scope.
+        Check that the token was issued via Token Exchange with the required `api:inventory:*` scope.
+

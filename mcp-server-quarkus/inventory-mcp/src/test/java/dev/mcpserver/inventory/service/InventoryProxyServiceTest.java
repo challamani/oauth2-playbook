@@ -32,7 +32,7 @@ class InventoryProxyServiceTest {
         TokenExchangeService tokenExchangeService = mock(TokenExchangeService.class);
         when(tokenExchangeService.exchangeForEventsRead("subject")).thenReturn("events-token");
         when(client.listEvents("Bearer events-token", "Berlin", 10, "date,asc"))
-                .thenReturn(List.of(new EventSummary("EVT-1", "Cloud Conf", "Berlin", "2026-10-21")));
+                .thenReturn(List.of(new EventSummary("EVT-1", "Cloud Conf", "Berlin", "2026-10-21", null)));
 
         InventoryProxyService service = new InventoryProxyService(client, tokenExchangeService);
 

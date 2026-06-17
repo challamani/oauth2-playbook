@@ -167,7 +167,7 @@ Password for both users: `demo`
 Keycloak maintains browser SSO sessions. Simply logging out of one tab is not enough — the session persists. To force a completely fresh login with a different user, run:
 
 ```bash
-open "https://localhost:9443/realms/oauth2-playbook/protocol/openid-connect/logout?post_logout_redirect_uri=http://localhost&client_id=oauth2-playbook-mcp-agent"
+open "https://localhost:9443/realms/oauth2-playbook/protocol/openid-connect/logout?post_logout_redirect_uri=https://localhost:9443&client_id=oauth2-playbook-mcp-agent"
 ```
 
 This clears the Keycloak SSO cookie. Then:

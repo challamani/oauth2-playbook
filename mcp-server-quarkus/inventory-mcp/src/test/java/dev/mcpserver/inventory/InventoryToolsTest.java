@@ -39,7 +39,7 @@ class InventoryToolsTest {
         AuthenticatedUser user = new AuthenticatedUser("jwt", "alice");
         when(security.requireAuthenticatedUser(anyString())).thenReturn(user);
         when(proxy.listTopEvents(new ListEventsRequest("London"), user))
-                .thenReturn(List.of(new EventSummary("EVT-1", "JavaOne", "London", "2026-01-01")));
+                .thenReturn(List.of(new EventSummary("EVT-1", "JavaOne", "London", "2026-01-01", null)));
 
         InventoryTools tools = new InventoryTools(security, validator, proxy);
         List<EventSummary> events = tools.listTopEventsByCity("London");

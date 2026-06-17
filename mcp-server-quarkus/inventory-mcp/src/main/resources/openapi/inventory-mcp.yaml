@@ -59,7 +59,7 @@ components:
         title:
           type: string
           description: Display name of the conference.
-          example: Manchester Java Community Unconference
+          example: JMANC Unconference
         city:
           type: string
           description: City where the event takes place.

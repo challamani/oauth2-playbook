@@ -51,19 +51,29 @@ public class InventoryResource {
     private static final Map<String, ReservationResult> RESERVATION_STORE = new ConcurrentHashMap<>();
 
     static {
-        seed("EVT-001", "JavaOne",                          "San Francisco", "2026-09-15", 500, 199.99, "Premier Java conference bringing together developers for sessions on the latest Java innovations.");
-        seed("EVT-002", "Devoxx Belgium",                   "Antwerp",       "2026-11-03", 800, 249.99, "Europe's largest Java and JVM conference with deep-dive talks from top industry speakers.");
-        seed("EVT-003", "QCon London",                      "London",        "2026-03-24", 300, 299.99, "International software conference focused on emerging trends adopted by early adopters and innovators.");
-        seed("EVT-004", "SpringOne",                        "Las Vegas",     "2026-08-20", 400, 179.99, "The definitive Spring and cloud-native Java conference by VMware Tanzu for modern app developers.");
-        seed("EVT-005", "KubeCon EU",                       "Amsterdam",     "2026-04-01", 600, 349.99, "The flagship CNCF conference covering Kubernetes, cloud-native infrastructure, and open source ecosystems.");
-        seed("EVT-006", "KubeCon NA",                       "Atlanta",       "2026-11-18", 700, 349.99, "North America's biggest cloud-native event bringing together Kubernetes and CNCF project communities.");
-        seed("EVT-007", "VoxxedDays Zurich",                "Zurich",        "2026-03-19", 200, 149.99, "A community-driven developer conference with hands-on sessions on Java, microservices, and DevOps.");
-        seed("EVT-008", "Devoxx UK",                        "London",        "2026-05-07", 350, 229.99, "UK edition of Devoxx featuring expert talks on Java, architecture, AI, and cloud technologies.");
-        seed("EVT-009", "Devoxx France",                    "Paris",         "2026-04-22", 450, 219.99, "France's largest developer conference with sessions in French and English on all things JVM and beyond.");
-        seed("EVT-010", "GeeCon",                           "Krakow",        "2026-05-22", 250,  99.99, "Central Europe's beloved Java conference known for high-quality talks and a strong community spirit.");
-        seed("EVT-011", "Devoxx Morocco",                   "Casablanca",    "2026-10-14", 300,  79.99, "Africa's growing Java and open source conference connecting developers across the continent.");
-        seed("EVT-012", "JNation",                          "Lisbon",        "2026-06-04", 280, 129.99, "A welcoming Portuguese Java conference celebrating the JVM ecosystem with top speakers and workshops.");
-        seed("EVT-013", "Manchester Java Community Unconference", "Manchester", "2026-07-10", 150,   0.00, "Free community-led unconference by jmanc.org where attendees shape the agenda on the day. All welcome!");
+        // Upcoming Events: June 24, 2026 - December 31, 2026
+        // UK Events
+        seed("EVT-001", "JManc Unconference",               "Manchester",    "2026-07-10", 200,    0.00, "Free community-led unconference where attendees shape the agenda. Celebrating Java and open source community.");
+        seed("EVT-002", "London DevOps Conference",         "London",        "2026-07-15", 400,  249.99, "Premier UK DevOps conference featuring talks on containerization, infrastructure automation, and best practices.");
+        seed("EVT-003", "UK Java Developer Summit",         "Birmingham",    "2026-07-25", 300,  199.99, "Dedicated UK Java conference bringing together enterprise Java developers for deep technical sessions.");
+        seed("EVT-004", "Manchester Tech Talks",            "Manchester",    "2026-08-12", 250,   79.99, "Series of technical talks on cloud platforms, microservices, and modern software architecture in Manchester.");
+        seed("EVT-005", "Edinburgh Software Symposium",     "Edinburgh",     "2026-08-28", 280,  189.99, "Scotland's premier software development conference featuring world-class speakers on innovation and technology.");
+        seed("EVT-006", "Bristol Cloud and Kubernetes",     "Bristol",       "2026-09-08", 220,  169.99, "Southwest UK's leading conference on cloud-native technologies, Kubernetes, and container orchestration.");
+        
+        // International Events
+        seed("EVT-007", "O'Reilly Open Source Convention",  "Portland",      "2026-07-20", 600,  499.99, "Premier open source conference bringing together developers, architects, and innovators to share knowledge.");
+        seed("EVT-008", "CloudNative SecurityCon",          "San Francisco", "2026-08-05", 400,  399.99, "Dedicated conference on cloud-native security, DevSecOps practices, and containerized application safety.");
+        seed("EVT-009", "SpringOne",                        "Las Vegas",     "2026-08-20", 500,  349.99, "The definitive Spring and cloud-native Java conference by VMware Tanzu for modern app developers.");
+        seed("EVT-010", "JavaOne",                          "San Francisco", "2026-09-15", 600,  599.99, "Premier Java conference bringing together developers for sessions on the latest Java innovations and trends.");
+        seed("EVT-011", "Gartner Application Strategies",   "Orlando",       "2026-09-28", 800,  699.99, "Leading enterprise conference on application modernization, cloud strategy, and digital transformation.");
+        seed("EVT-012", "QCon London",                      "London",        "2026-10-05", 350,  449.99, "International software conference focused on emerging trends adopted by early adopters and innovators.");
+        seed("EVT-013", "Devoxx Morocco",                   "Casablanca",    "2026-10-14", 350,  149.99, "Africa's growing Java and open source conference connecting developers across the African continent.");
+        seed("EVT-014", "QCon San Francisco",               "San Francisco", "2026-10-26", 500,  549.99, "International software conference focused on emerging trends adopted by early adopters and innovators.");
+        seed("EVT-015", "Devoxx Belgium",                   "Antwerp",       "2026-11-03", 800,  449.99, "Europe's largest Java and JVM conference with deep-dive talks from industry speakers and experts.");
+        seed("EVT-016", "AWS re:Invent",                    "Las Vegas",     "2026-11-16", 1000, 899.99, "AWS's flagship conference showcasing cloud innovation, serverless, AI/ML, and enterprise solutions.");
+        seed("EVT-017", "KubeCon NA",                       "Atlanta",       "2026-11-18", 700,  649.99, "North America's biggest cloud-native event bringing together Kubernetes and CNCF project communities.");
+        seed("EVT-018", "Jfokus",                           "Stockholm",     "2026-12-02", 400,  299.99, "Nordic Java conference featuring talks on Java platform, cloud technologies, and software development.");
+        seed("EVT-019", "Devoxx Greece",                    "Athens",        "2026-12-07", 300,  199.99, "Greek Java conference bringing together developers from across Europe for technical sessions and networking.");
     }
 
     private static void seed(String id, String name, String city, String date, int stock, double price, String description) {
