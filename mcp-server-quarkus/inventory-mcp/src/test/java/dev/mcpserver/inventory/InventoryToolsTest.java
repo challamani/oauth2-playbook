@@ -10,6 +10,7 @@ import dev.mcpserver.inventory.model.TicketAvailabilityRequest;
 import dev.mcpserver.inventory.service.InventoryProxyService;
 import dev.mcpserver.inventory.service.OpenApiContractValidator;
 import dev.mcpserver.inventory.service.SecurityGatewayService;
+import jakarta.ws.rs.ForbiddenException;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -98,5 +99,47 @@ class InventoryToolsTest {
         InventoryTools tools = new InventoryTools(security, validator, proxy);
 
         assertThrows(IllegalArgumentException.class, () -> tools.listTopEventsByCity(""));
+    }
+
+    @Test
+    void listTopEventsByCityPropagatesForbiddenWhenScopeIsMissing() {
+        SecurityGatewayService security = mock(SecurityGatewayService.class);
+        OpenApiContractValidator validator = mock(OpenApiContractValidator.class);
+        InventoryProxyService proxy = mock(InventoryProxyService.class);
+
+        doThrow(new ForbiddenException("JWT is missing required tool scope: mcp:events:read"))
+                .when(security).requireAuthenticatedUser(anyString());
+
+        InventoryTools tools = new InventoryTools(security, validator, proxy);
+
+        assertThrows(ForbiddenException.class, () -> tools.listTopEventsByCity("London"));
+    }
+
+    @Test
+    void availableTicketsAndPricePropagatesForbiddenWhenScopeIsMissing() {
+        SecurityGatewayService security = mock(SecurityGatewayService.class);
+        OpenApiContractValidator validator = mock(OpenApiContractValidator.class);
+        InventoryProxyService proxy = mock(InventoryProxyService.class);
+
+        doThrow(new ForbiddenException("JWT is missing required tool scope: mcp:tickets:read"))
+                .when(security).requireAuthenticatedUser(anyString());
+
+        InventoryTools tools = new InventoryTools(security, validator, proxy);
+
+        assertThrows(ForbiddenException.class, () -> tools.availableTicketsAndPrice("EVT-1"));
+    }
+
+    @Test
+    void reserveEventPropagatesForbiddenWhenScopeIsMissing() {
+        SecurityGatewayService security = mock(SecurityGatewayService.class);
+        OpenApiContractValidator validator = mock(OpenApiContractValidator.class);
+        InventoryProxyService proxy = mock(InventoryProxyService.class);
+
+        doThrow(new ForbiddenException("JWT is missing required tool scope: mcp:reservations:write"))
+                .when(security).requireAuthenticatedUser(anyString());
+
+        InventoryTools tools = new InventoryTools(security, validator, proxy);
+
+        assertThrows(ForbiddenException.class, () -> tools.reserveEvent("EVT-1", 2));
     }
 }

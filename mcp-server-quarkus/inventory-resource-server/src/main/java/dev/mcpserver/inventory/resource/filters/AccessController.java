@@ -42,6 +42,13 @@ public class AccessController implements ContainerRequestFilter {
             return;
         }
 
+        String rawToken = jwt.getRawToken();
+        if (rawToken != null && !rawToken.isBlank()) {
+            logger.debug("Incoming access token: {}", rawToken);
+        } else {
+            logger.debug("No access token present in request");
+        }
+
         ScopesAllowed annotation = resourceInfo.getResourceMethod().getAnnotation(ScopesAllowed.class);
         if (Objects.isNull(annotation)) {
             logger.debug("No @ScopesAllowed on method - skipping scope check");

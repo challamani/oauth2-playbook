@@ -2,8 +2,13 @@ package dev.mcpserver.inventory.service;
 
 import dev.mcpserver.inventory.model.AuthenticatedUser;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.ws.rs.ForbiddenException;
+import jakarta.ws.rs.NotAuthorizedException;
+import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.jwt.JsonWebToken;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import jakarta.inject.Inject;
 import java.util.Arrays;
@@ -14,6 +19,8 @@ import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class SecurityGatewayService {
+
+    private static final Logger logger = LoggerFactory.getLogger(SecurityGatewayService.class);
 
     @Inject
     JsonWebToken jwt;
@@ -35,13 +42,15 @@ public class SecurityGatewayService {
 
     public AuthenticatedUser requireAuthenticatedUser() {
         if (jwt == null || isBlank(jwt.getRawToken())) {
-            throw new SecurityException("Missing bearer token");
+            throw new NotAuthorizedException("Missing bearer token", Response.status(Response.Status.UNAUTHORIZED).build());
         }
+
+        logger.debug("Inbound agent token: {}", jwt.getRawToken());
 
         if (!isBlank(requiredIssuer)) {
             String issuer = claimAsString("iss");
             if (!requiredIssuer.equals(issuer)) {
-                throw new SecurityException("Invalid token issuer");
+                throw new NotAuthorizedException("Invalid token issuer", Response.status(Response.Status.UNAUTHORIZED).build());
             }
         }
 
@@ -50,7 +59,7 @@ public class SecurityGatewayService {
             String authorizedParty = claimAsString("azp");
             if (!containsAudience(audienceClaim, requiredAudience)
                     && (isBlank(authorizedParty) || !requiredAudience.equals(authorizedParty))) {
-                throw new SecurityException("Token audience does not match");
+                throw new NotAuthorizedException("Token audience does not match", Response.status(Response.Status.UNAUTHORIZED).build());
             }
         }
 
@@ -62,7 +71,7 @@ public class SecurityGatewayService {
         );
 
         if (isBlank(username)) {
-            throw new SecurityException("Unable to resolve username from JWT claims");
+            throw new NotAuthorizedException("Unable to resolve username from JWT claims", Response.status(Response.Status.UNAUTHORIZED).build());
         }
 
         return new AuthenticatedUser(jwt.getRawToken(), username);
@@ -76,7 +85,7 @@ public class SecurityGatewayService {
 
         String scopeClaim = claimAsString("scope");
         if (!hasScope(scopeClaim, requiredScope)) {
-            throw new SecurityException("JWT is missing required tool scope: " + requiredScope);
+            throw new ForbiddenException("JWT is missing required tool scope: " + requiredScope);
         }
 
         return user;

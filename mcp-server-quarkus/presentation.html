@@ -6,7 +6,7 @@
   <title>Secure AI Agents with OAuth 2.1 — Manikanta Challa</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     /* ── Reset & base ───────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -26,7 +26,7 @@
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'Fira Code', Consolas, Monaco, 'Courier New', monospace;
+      font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
       height: 100vh;
       display: flex;
       flex-direction: column;
@@ -59,6 +59,7 @@
       overflow-y: auto; /* Fixes border trimming by allowing scrolling if needed */
     }
     .slide.active { display: flex; }
+    #slide-14 { overflow: hidden; gap: 12px; padding: 30px 40px 16px; }
 
     /* ── Tag/label ──────────────────────────────────────────────── */
     .tag {
@@ -89,15 +90,15 @@
     /* Uniform body font size */
     p, li, table { font-size: 1.4rem; line-height: 1.6; color: var(--text); }
     li { margin-left: 24px; margin-bottom: 8px; }
-    li::marker { color: var(--muted); content: ">> "; }
+    li::marker { color: var(--muted); content: "→ "; }
     strong { color: var(--term-amber); font-weight: 600; text-decoration: none; }
     code {
-      font-family: 'Fira Code', monospace;
-      font-size: 1.2rem;
+      font-family: 'Fira Code', 'Courier New', monospace;
+      font-size: 1.1rem;
       background: var(--bg);
       border: 1px solid var(--border);
       border-radius: 4px;
-      padding: 4px 8px;
+      padding: 3px 7px;
       color: var(--term-cyan);
     }
 
@@ -129,12 +130,13 @@
       border: 1px solid var(--border);
       border-left: 3px solid var(--term-cyan);
       border-radius: 6px;
-      padding: 16px 20px;
-      font-family: inherit;
-      font-size: 1.1rem;
+      padding: 14px 18px;
+      font-family: 'Fira Code', 'Courier New', monospace;
+      font-size: 1.0rem;
       line-height: 1.5;
       color: var(--muted);
       overflow-x: auto;
+      overflow-y: auto;
     }
     .kw  { color: var(--term-amber); }
     .str { color: var(--term-cyan); }
@@ -186,6 +188,56 @@
 
     /* ── Step list ──────────────────────────────────────────────── */
     .steps { display: flex; flex-direction: column; gap: 16px; }
+    #slide-8 .steps { gap: 8px; }
+    #slide-8 .step { padding: 10px 14px; }
+    #slide-8 .step-body p { font-size: 1.2rem; }
+
+    /* ── Sequence diagram (slide 8) ─────────────────────────────── */
+    .seq-wrap { display:flex; flex-direction:column; flex:1; gap:0; min-height:0; overflow:hidden; }
+    .seq-hdr  { display:flex; justify-content:space-between; align-items:center; padding-bottom:10px; border-bottom:1px dashed var(--border); flex-shrink:0; }
+    .seq-actor-box {
+      background:var(--bg); border:2px solid var(--term-amber); border-radius:6px;
+      padding:10px 28px; text-align:center; font-weight:700; font-size:1.25rem; min-width:170px;
+      color:var(--term-amber);
+    }
+    .seq-actor-box small { display:block; font-weight:400; font-size:1.0rem; color:var(--muted); margin-top:2px; }
+    .seq-body  { display:flex; flex-direction:column; flex:1; justify-content:space-evenly; padding:4px 0; }
+    .seq-row   { display:flex; align-items:center; gap:10px; padding:4px 0; }
+    .seq-badge {
+      width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+      font-size:.95rem; font-weight:700; flex-shrink:0;
+      font-family:'Fira Code',monospace;
+    }
+    .seq-badge.amber { background:rgba(251,191,36,.1); border:1px solid var(--term-amber); color:var(--term-amber); }
+    .seq-badge.cyan  { background:rgba(34,211,238,.1);  border:1px solid var(--term-cyan);  color:var(--term-cyan); }
+    .seq-actor-tag {
+      font-size:1.0rem; font-weight:600; flex-shrink:0; padding:3px 10px;
+      border-radius:4px; min-width:82px; text-align:center;
+    }
+    .seq-actor-tag.amber { color:var(--term-amber); border:1px solid rgba(251,191,36,.3); background:rgba(251,191,36,.06); }
+    .seq-actor-tag.cyan  { color:var(--term-cyan);  border:1px solid rgba(34,211,238,.3);  background:rgba(34,211,238,.06); }
+    .seq-actor-tag.dim   { color:var(--muted);       border:1px solid var(--border);         background:transparent; }
+    .seq-arrow-wrap { flex:1; position:relative; display:flex; align-items:center; height:36px; }
+    .seq-arrow-line { flex:1; height:1px; }
+    .seq-arrow-line.amber { background:rgba(251,191,36,.65); }
+    .seq-arrow-line.cyan  { background:rgba(34,211,238,.65); }
+    .seq-arrowhead { font-size:.85rem; flex-shrink:0; }
+    .seq-arrowhead.amber { color:var(--term-amber); }
+    .seq-arrowhead.cyan  { color:var(--term-cyan); }
+    .seq-msg-over {
+      position:absolute; left:50%; transform:translateX(-50%);
+      bottom:calc(100% - 6px);
+      font-size:1.0rem; font-family:'Fira Code',monospace;
+      background:#040404; padding:2px 10px;
+      white-space:nowrap; color:var(--text);
+      border:1px solid rgba(255,255,255,0.1); border-radius:3px;
+      pointer-events:none;
+    }
+    .seq-local-note {
+      flex:1; background:rgba(251,191,36,.05); border:1px dashed rgba(251,191,36,.3);
+      border-left:3px solid var(--term-amber); border-radius:4px; padding:7px 14px;
+      font-size:1.05rem; color:var(--text);
+    }
     .step {
       display: flex;
       gap: 16px;
@@ -282,122 +334,103 @@
     }
 
     /* ═══════════════════════════════════════════════════════════════════
-       Animated flow slide (slide-anim) - CYAN + AMBER only, beautified
+       Token journey animation slide
        ═══════════════════════════════════════════════════════════════════ */
+    #slide-anim { background: var(--surface); }
 
-    /* scanline overlay */
-    #slide-anim {
-      background:
-        repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,0.012) 3px, rgba(255,255,255,0.012) 4px),
-        var(--surface);
-    }
-
-    @keyframes nodePulseCyan  { 0%,100%{box-shadow:0 0 10px rgba(34,211,238,.35)} 50%{box-shadow:0 0 26px rgba(34,211,238,.8)} }
-    @keyframes nodePulseAmber { 0%,100%{box-shadow:0 0 10px rgba(251,191,36,.35)} 50%{box-shadow:0 0 26px rgba(251,191,36,.8)} }
+    @keyframes nodePulseCyan  { 0%,100%{box-shadow:0 0 8px rgba(34,211,238,.3)} 50%{box-shadow:0 0 22px rgba(34,211,238,.75)} }
+    @keyframes nodePulseAmber { 0%,100%{box-shadow:0 0 8px rgba(251,191,36,.3)} 50%{box-shadow:0 0 22px rgba(251,191,36,.75)} }
+    @keyframes tokenFloat     { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
     @keyframes cursorBlink    { 0%,100%{opacity:1} 50%{opacity:0} }
 
-    /* Node wrapper */
-    .af-node { display:flex; flex-direction:column; align-items:center; gap:8px; }
-
-    /* terminal-window style node box */
-    .af-box {
-      border-radius: 8px;
-      border: 1px solid rgba(255,255,255,0.2);
-      font-size: 1.3rem;
-      font-weight: 600;
-      text-align: center;
-      line-height: 1.4;
-      min-width: 158px;
+    .af-node-box {
       background: #080808;
-      transition: border-color .45s ease, color .45s ease;
-      color: var(--muted);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 8px;
+      text-align: center;
+      transition: border-color .4s ease, box-shadow .4s ease;
       overflow: hidden;
+      min-width: 140px;
     }
-    .af-box-titlebar {
-      display: block;
-      font-size: .75rem;
-      letter-spacing: 4px;
+    .af-node-box .titlebar {
+      font-size: .7rem;
+      letter-spacing: 3px;
       padding: 5px 10px;
-      background: rgba(255,255,255,0.05);
-      border-bottom: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      border-bottom: 1px solid rgba(255,255,255,0.10);
       color: rgba(255,255,255,0.2);
       text-align: left;
     }
-    .af-box-inner { padding: 14px 18px; }
+    .af-node-box .body { padding: 12px 16px; font-size: 1.3rem; font-weight: 600; color: var(--muted); line-height:1.4; }
+    .af-node-box .sublabel { font-size: 1.0rem; font-weight: 400; color: rgba(255,255,255,0.3); margin-top:2px; }
+    .af-node-box.lit-cyan  { border-color: var(--term-cyan);  border-width:2px; box-shadow: 0 0 22px rgba(34,211,238,.4); animation: nodePulseCyan 2s ease infinite; }
+    .af-node-box.lit-cyan  .body { color: var(--text); }
+    .af-node-box.lit-cyan  .titlebar { color: var(--term-cyan); }
+    .af-node-box.lit-amber { border-color: var(--term-amber); border-width:2px; box-shadow: 0 0 22px rgba(251,191,36,.4); animation: nodePulseAmber 2s ease infinite; }
+    .af-node-box.lit-amber .body { color: var(--text); }
+    .af-node-box.lit-amber .titlebar { color: var(--term-amber); }
 
-    .af-box-copilot.lit { border-color:var(--term-amber); color:var(--text); animation:nodePulseAmber 2s ease infinite; }
-    .af-box-copilot.lit .af-box-titlebar { color:var(--term-amber); }
-    .af-box-mcp.lit     { border-color:var(--term-cyan);  color:var(--text); animation:nodePulseCyan  2s ease infinite; }
-    .af-box-mcp.lit .af-box-titlebar  { color:var(--term-cyan); }
-    .af-box-kc.lit      { border-color:var(--term-amber); color:var(--text); animation:nodePulseAmber 2s ease infinite; }
-    .af-box-kc.lit .af-box-titlebar   { color:var(--term-amber); }
-    .af-box-rs.lit      { border-color:var(--term-cyan);  color:var(--text); animation:nodePulseCyan  2s ease infinite; }
-    .af-box-rs.lit .af-box-titlebar   { color:var(--term-cyan); }
-
-    .af-label { font-size:.95rem; color:var(--muted); text-align:center; max-width:158px; letter-spacing:.04em; }
-
-    /* Lines */
-    .af-arrow-row { display:flex; align-items:center; position:relative; }
-    .af-line { height:2px; background:rgba(255,255,255,0.1); flex:1; position:relative; overflow:visible; }
-    .af-line::after {
-      content:''; position:absolute; left:0; top:-1px;
-      height:4px; width:0; border-radius:2px;
-      transition: width .85s cubic-bezier(.4,0,.2,1);
+    /* Moving token packet */
+    #af-token-pkt {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      pointer-events: none;
+      opacity: 0;
+      z-index: 20;
+      transform: translate(-50%, -50%);
     }
-    .af-line.filled-blue::after   { background:var(--term-cyan);  box-shadow:0 0 14px var(--term-cyan),0 0 35px rgba(34,211,238,.3);  width:100%; }
-    .af-line.filled-yellow::after { background:var(--term-amber); box-shadow:0 0 14px var(--term-amber),0 0 35px rgba(251,191,36,.3); width:100%; }
-    .af-line.rev::after { left:auto; right:0; }
-
-    .af-arrowhead { font-size:1.6rem; color:rgba(255,255,255,0.12); transition:color .4s,text-shadow .4s; flex-shrink:0; }
-    .af-arrowhead.lit-blue   { color:var(--term-cyan);  text-shadow:0 0 14px var(--term-cyan); }
-    .af-arrowhead.lit-yellow { color:var(--term-amber); text-shadow:0 0 14px var(--term-amber); }
-
-    /* Pills */
-    .af-pill-row { display:flex; justify-content:center; min-height:28px; margin-bottom:8px; }
-    .af-pill {
-      font-size:1.05rem; font-weight:600; padding:5px 14px;
-      border-radius:20px; white-space:nowrap;
-      opacity:0; transform:translateY(6px) scale(.94);
-      transition:opacity .5s ease,transform .5s ease;
-      background:#080808; color:var(--text); border:1px solid rgba(255,255,255,0.15);
+    #af-token-dot {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      box-shadow: 0 0 18px currentColor, 0 0 6px currentColor;
+      animation: tokenFloat 1s ease infinite;
     }
-    .af-pill.show { opacity:1; transform:translateY(0) scale(1); }
-    .af-pill-blue   { border-color:var(--term-cyan);  color:var(--term-cyan);  box-shadow:0 0 12px rgba(34,211,238,.25); }
-    .af-pill-yellow { border-color:var(--term-amber); color:var(--term-amber); box-shadow:0 0 12px rgba(251,191,36,.25); }
-
-    /* Scope badges */
-    .af-scope-row { display:flex; flex-wrap:wrap; gap:6px; justify-content:center; min-height:24px; margin-top:6px; }
-    .af-scope {
-      font-size:.9rem; padding:3px 9px; border-radius:4px;
-      opacity:0; transform:scale(.82);
-      transition:opacity .4s ease,transform .4s ease;
-      border:1px dashed rgba(255,255,255,0.15); background:#080808; color:var(--muted);
+    #af-token-label-txt {
+      font-size: .9rem;
+      font-weight: 700;
+      font-family: 'Fira Code', monospace;
+      padding: 4px 11px;
+      border-radius: 12px;
+      border: 1px solid;
+      background: #000;
+      white-space: nowrap;
+      letter-spacing: .03em;
     }
-    .af-scope.show { opacity:1; transform:scale(1); }
-    .af-scope-blue { border-color:var(--term-cyan); color:var(--term-cyan); }
 
-    /* Caption with blinking cursor */
-    #af-caption {
-      min-height:72px; background:#060606;
-      border:1px solid rgba(255,255,255,0.14); border-left:4px solid var(--term-cyan);
-      border-radius:6px; padding:16px 22px;
-      font-size:1.3rem; line-height:1.55; color:var(--text);
-      transition:opacity .3s ease;
-    }
-    #af-caption strong { color:var(--term-cyan); }
-    #af-cursor { color:var(--term-cyan); animation:cursorBlink 1s step-start infinite; margin-left:3px; }
+    /* SVG connection lines */
+    #af-svg-paths { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; overflow:visible; }
+    .af-path-bg { stroke: rgba(255,255,255,0.14); stroke-width:1.5; fill:none; stroke-dasharray:6,4; }
 
-    /* Step progress dots */
-    #af-steps-dots { display:flex; gap:10px; justify-content:center; }
-    .af-dot { width:9px; height:9px; border-radius:50%; background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.2); transition:all .3s; }
-    .af-dot.active { background:var(--term-cyan); box-shadow:0 0 8px var(--term-cyan); border-color:var(--term-cyan); }
+    /* Step dots */
+    #af-steps-dots { display:flex; gap:12px; justify-content:center; align-items:center; }
+    .af-dot { width:10px; height:10px; border-radius:50%; background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.2); transition:all .3s; }
+    .af-dot.active { background:var(--term-cyan); box-shadow:0 0 10px var(--term-cyan); border-color:var(--term-cyan); width:12px; height:12px; }
     .af-dot.done   { background:var(--term-amber); border-color:var(--term-amber); }
 
-    #slide-anim .af-diagram {
-      display:flex; flex-direction:column; flex:1; gap:10px; justify-content:center;
+    /* Step counter */
+    #af-step-counter {
+      font-size:1.1rem; font-family:'Fira Code',monospace; color:var(--muted);
+      background:rgba(255,255,255,0.04); border:1px solid var(--border);
+      padding:4px 12px; border-radius:4px; white-space:nowrap;
     }
-    .af-node-row { display:flex; align-items:center; justify-content:space-between; gap:8px; }
-    .af-connector { flex:1; display:flex; flex-direction:column; align-items:stretch; gap:0; }
+    #af-step-counter b { color:var(--term-cyan); font-weight:700; }
+
+    #af-caption {
+      background: #060606;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-left: 4px solid var(--term-cyan);
+      border-radius: 6px;
+      padding: 14px 20px;
+      font-size: 1.2rem;
+      line-height: 1.6;
+      color: var(--text);
+      flex-shrink: 0;
+    }
+    #af-caption strong { color: var(--term-cyan); }
+    #af-cursor { color: var(--term-cyan); animation: cursorBlink 1s step-start infinite; margin-left:3px; }
 
   </style>
 </head>
@@ -431,28 +464,35 @@
   <!-- ═══════════════════════════════════════════════════════ SLIDE 2 -->
   <div class="slide" id="slide-2">
     <div class="tag">Agenda</div>
-    <h2>What You'll Learn</h2>
-    <div class="grid-2" style="flex:1; margin-top:20px;">
-      <div>
-        <h3>Concepts</h3>
-        <ul>
-          <li>Why AI agents need their own <strong>identity</strong></li>
-          <li>How the <strong>MCP Protocol</strong> works</li>
-          <li><strong>OAuth 2.1</strong> vs OAuth 2.0</li>
-          <li>The mechanics of <strong>Token Exchange</strong></li>
-        </ul>
+    <h2>Securing AI Agents with OAuth 2.0 Grant Types</h2>
+    <div style="flex:1; display:flex; flex-direction:column; gap:18px; margin-top:10px;">
+
+      <p style="color:var(--muted); font-size:1.35rem; margin:0;">The core question: <strong>How does an AI Agent prove who it is — and stay within its lane?</strong> We'll answer it using two OAuth 2.0 grant types.</p>
+
+      <div class="grid-2" style="flex:0; gap:20px;">
+        <!-- Grant type 1 -->
+        <div class="card card-highlight" style="border-left-color:var(--term-cyan);">
+          <p style="color:var(--term-cyan); font-size:1.1rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; margin-bottom:6px;">Grant Type 1</p>
+          <h3 style="margin-bottom:8px;">Auth Code + PKCE</h3>
+          <p style="color:var(--muted); font-size:1.25rem; margin:0;">How the <strong>AI Agent (Copilot)</strong> securely obtains a user-delegated access token from Keycloak — without embedding any client secret.</p>
+        </div>
+        <!-- Grant type 2 -->
+        <div class="card card-highlight" style="border-left-color:var(--term-cyan);">
+          <p style="color:var(--term-cyan); font-size:1.1rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; margin-bottom:6px;">Grant Type 2</p>
+          <h3 style="margin-bottom:8px;">Token Exchange — RFC 8693</h3>
+          <p style="color:var(--muted); font-size:1.25rem; margin:0;">How the <strong>MCP Server</strong> narrows the agent's token scope before calling a Resource Server — enforcing least-privilege at every boundary.</p>
+        </div>
       </div>
-      <div>
-        <h3>Practical Setup</h3>
-        <ul>
-          <li>Copilot OAuth discovery</li>
-          <li>Designing secure scopes</li>
-          <li><strong>Live Demo:</strong> Ticket booking</li>
-        </ul>
+
+      <div style="display:flex; gap:16px;">
+        <div class="card" style="flex:1; padding:14px 20px;">
+          <p style="margin:0; font-size:1.25rem;"><strong>Foundation:</strong> What MCP Protocol is, OAuth 2.1 vs 2.0, and why AI agents need their own identity.</p>
+        </div>
+        <div class="card" style="flex:1; padding:14px 20px; border-left-color:var(--term-amber);">
+          <p style="margin:0; font-size:1.25rem;"><strong>Live Demo:</strong> GitHub Copilot reserves a conference ticket — using both grant types end-to-end.</p>
+        </div>
       </div>
-    </div>
-    <div class="callout">
-      <strong>Goal:</strong> Build a mental model for securing AI agents, with run-ready code examples.
+
     </div>
   </div>
 
@@ -514,40 +554,75 @@
   <div class="slide" id="slide-flow">
     <div class="tag">Architecture</div>
     <h2>The Layered Architecture</h2>
-    <div style="flex:1; display:flex; align-items:center; justify-content:center; width: 100%;">
-      <div style="display:flex; justify-content: space-between; align-items: center; width: 100%; max-width: 1200px;">
+    <div style="flex:1; display:flex; flex-direction:column; gap:16px; justify-content:center;">
 
-        <!-- Box 1 -->
-        <div style="background:var(--bg); border: 2px solid var(--term-amber); border-radius: 8px; padding: 24px 32px; width: 28%; text-align:center; box-shadow: 0 0 15px rgba(251, 191, 36, 0.2);">
-          <h3 style="margin-bottom: 8px; color: var(--term-amber);">AI Agent</h3>
-          <p style="color:var(--muted); font-size: 1.3rem;">GitHub Copilot</p>
+      <!-- Top row: Agent → MCP → RS -->
+      <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+
+        <div style="background:var(--bg); border:2px solid var(--term-cyan); border-radius:8px; padding:20px 28px; width:24%; text-align:center; box-shadow:0 0 14px rgba(34,211,238,0.15);">
+          <p style="color:var(--term-cyan); font-size:1.05rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; margin-bottom:6px;">AI Agent</p>
+          <p style="font-size:1.4rem; font-weight:600; margin:0;">GitHub Copilot</p>
+          <p style="color:var(--muted); font-size:1.1rem; margin-top:4px;">MCP Client</p>
         </div>
 
-        <!-- Arrow 1 -->
-        <div style="text-align:center; flex: 1;">
-          <p style="color:var(--term-cyan); font-size: 1.3rem; font-weight:700; margin-bottom:4px;">HTTP + Auth Token</p>
-          <div style="font-size: 3rem; color:var(--border);">⟶</div>
+        <div style="flex:1; text-align:center;">
+          <p style="color:var(--term-amber); font-size:1.15rem; font-weight:600; margin-bottom:4px;">Bearer mcp:* token</p>
+          <div style="font-size:2.4rem; color:var(--term-amber); opacity:.7;">⟶</div>
         </div>
 
-        <!-- Box 2 -->
-        <div style="background:var(--bg); border: 2px solid var(--term-cyan); border-radius: 8px; padding: 24px 32px; width: 28%; text-align:center; box-shadow: 0 0 15px rgba(34, 211, 238, 0.2);">
-          <h3 style="margin-bottom: 8px; color: var(--term-cyan);">MCP Server</h3>
-          <p style="color:var(--muted); font-size: 1.3rem;">Tool Definitions</p>
+        <div style="background:var(--bg); border:2px solid var(--term-cyan); border-radius:8px; padding:20px 28px; width:24%; text-align:center; box-shadow:0 0 14px rgba(34,211,238,0.15);">
+          <p style="color:var(--term-cyan); font-size:1.05rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; margin-bottom:6px;">MCP Server</p>
+          <p style="font-size:1.4rem; font-weight:600; margin:0;">Tool Definitions</p>
+          <p style="color:var(--muted); font-size:1.1rem; margin-top:4px;">Quarkus · :8085</p>
         </div>
 
-        <!-- Arrow 2 -->
-        <div style="text-align:center; flex: 1;">
-          <p style="color:var(--term-amber); font-size: 1.3rem; font-weight:700; margin-bottom:4px;">Exchanged Token</p>
-          <div style="font-size: 3rem; color:var(--border);">⟶</div>
+        <div style="flex:1; text-align:center;">
+          <p style="color:var(--term-amber); font-size:1.15rem; font-weight:600; margin-bottom:4px;">Bearer api:* token</p>
+          <div style="font-size:2.4rem; color:var(--term-amber); opacity:.7;">⟶</div>
         </div>
 
-        <!-- Box 3 -->
-        <div style="background:var(--bg); border: 2px solid var(--term-cyan); border-radius: 8px; padding: 24px 32px; width: 28%; text-align:center; box-shadow: 0 0 15px rgba(34, 211, 238, 0.2);">
-          <h3 style="margin-bottom: 8px; color: var(--term-cyan);">Resource Server</h3>
-          <p style="color:var(--muted); font-size: 1.3rem;">Database / APIs</p>
+        <div style="background:var(--bg); border:2px solid var(--term-cyan); border-radius:8px; padding:20px 28px; width:24%; text-align:center; box-shadow:0 0 14px rgba(34,211,238,0.15);">
+          <p style="color:var(--term-cyan); font-size:1.05rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; margin-bottom:6px;">Resource Server</p>
+          <p style="font-size:1.4rem; font-weight:600; margin:0;">Inventory API</p>
+          <p style="color:var(--muted); font-size:1.1rem; margin-top:4px;">Quarkus · :9080</p>
         </div>
-
       </div>
+
+      <!-- Connector lines: aligned under initiating nodes (AI Agent + MCP Server) -->
+      <div style="display:flex; align-items:flex-start; width:100%;">
+        <!-- Under AI Agent (width:24%) -->
+        <div style="width:24%; display:flex; justify-content:center;">
+          <div style="display:flex; flex-direction:column; align-items:center; gap:2px;">
+            <div style="width:2px; height:28px; background:rgba(251,191,36,0.4);"></div>
+            <p style="color:var(--term-amber); font-size:1.0rem; font-weight:600; white-space:nowrap;">Auth Code + PKCE</p>
+            <div style="width:2px; height:28px; background:rgba(251,191,36,0.4);"></div>
+          </div>
+        </div>
+        <div style="flex:1;"></div>
+        <!-- Under MCP Server (width:24%) — Token Exchange is initiated by MCP Server -->
+        <div style="width:24%; display:flex; justify-content:center;">
+          <div style="display:flex; flex-direction:column; align-items:center; gap:2px;">
+            <div style="width:2px; height:28px; background:rgba(251,191,36,0.4);"></div>
+            <p style="color:var(--term-amber); font-size:1.0rem; font-weight:600; white-space:nowrap;">Token Exchange (RFC 8693)</p>
+            <div style="width:2px; height:28px; background:rgba(251,191,36,0.4);"></div>
+          </div>
+        </div>
+        <!-- Remaining space (Resource Server area — no Keycloak connection) -->
+        <div style="flex:1;"></div>
+        <div style="width:24%;"></div>
+      </div>
+
+      <!-- Keycloak: centered between AI Agent (≈12%) and MCP Server (≈50%) -->
+      <div style="display:flex; width:62%;">
+        <div style="flex:1; display:flex; justify-content:center;">
+          <div style="background:var(--bg); border:2px solid var(--term-cyan); border-radius:8px; padding:16px 40px; text-align:center; box-shadow:0 0 14px rgba(34,211,238,0.15);">
+            <p style="color:var(--term-cyan); font-size:1.05rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; margin-bottom:6px;">OAuth 2.1 Server</p>
+            <p style="font-size:1.4rem; font-weight:600; margin:0;">Keycloak</p>
+            <p style="color:var(--muted); font-size:1.1rem; margin-top:4px;">Token issuer &amp; exchanger · :9443</p>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -618,52 +693,108 @@
   <!-- ═══════════════════════════════════════════════════════ SLIDE 8 -->
   <div class="slide" id="slide-8">
     <div class="tag">Grant Type 1</div>
-    <h2>Auth Code + PKCE</h2>
-    <div class="grid-2" style="flex:1; margin-top:20px;">
-      <div>
-        <h3 style="margin-bottom: 20px;">PKCE Flow</h3>
-        <div class="steps">
-          <div class="step">
-            <div class="step-num">1</div>
-            <div class="step-body">
-              <strong>Generate <code>verifier</code></strong>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-num">2</div>
-            <div class="step-body">
-              <strong>Hash to <code>challenge</code></strong>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-num">3</div>
-            <div class="step-body">
-              <strong>User logs in</strong>
-              <p>Keycloak stores challenge.</p>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-num">4</div>
-            <div class="step-body">
-              <strong>Exchange token</strong>
-              <p>Send verifier. Keycloak checks hash matching.</p>
-            </div>
-          </div>
+    <h2>Auth Code + PKCE — Sequence Diagram</h2>
+
+    <div class="seq-wrap">
+
+      <!-- Actor headers: 3 actors -->
+      <div class="seq-hdr" style="gap:10px;">
+        <div class="seq-actor-box">
+          GitHub Copilot
+          <small>MCP Client · Public</small>
+        </div>
+        <div class="seq-actor-box" style="border-color:var(--term-cyan); color:var(--term-cyan);">
+          MCP Server
+          <small>Quarkus · :8085</small>
+        </div>
+        <div class="seq-actor-box">
+          Keycloak
+          <small>OAuth 2.1 · :9443</small>
         </div>
       </div>
-      <div>
-        <h3 style="margin-bottom: 20px;">Why it matters</h3>
-        <ul>
-          <li>Safe for native/public agents.</li>
-          <li>No secrets embedded in code.</li>
-          <li>Immune to intercept attacks limits.</li>
-          <li>GitHub Copilot connects smoothly.</li>
-        </ul>
-        <div class="callout" style="margin-top:40px">
-          By completing PKCE, the Agent securely proves it is acting <strong>as the user</strong>.
+
+      <!-- Message rows -->
+      <div class="seq-body">
+
+        <!-- Step 1: Copilot → MCP Server: discovery -->
+        <div class="seq-row">
+          <span class="seq-badge amber">1</span>
+          <span class="seq-actor-tag amber">Copilot</span>
+          <div class="seq-arrow-wrap">
+            <div class="seq-arrow-line amber"></div>
+            <div class="seq-msg-over">GET /.well-known/oauth-authorization-server</div>
+            <span class="seq-arrowhead amber">▶</span>
+          </div>
+          <span class="seq-actor-tag cyan">MCP Server</span>
         </div>
-      </div>
-    </div>
+
+        <!-- Step 2: MCP Server → Copilot: metadata (points to Keycloak as auth server) -->
+        <div class="seq-row">
+          <span class="seq-badge amber">2</span>
+          <span class="seq-actor-tag cyan">MCP Server</span>
+          <div class="seq-arrow-wrap">
+            <span class="seq-arrowhead amber">◀</span>
+            <div class="seq-msg-over">OAuth Metadata: issuer, auth_endpoint → Keycloak (:9443), JWKS URI</div>
+            <div class="seq-arrow-line amber"></div>
+          </div>
+          <span class="seq-actor-tag amber">Copilot</span>
+        </div>
+
+        <!-- Step 3: local PKCE generation -->
+        <div class="seq-row">
+          <span class="seq-badge amber">3</span>
+          <span class="seq-actor-tag amber">Copilot</span>
+          <div class="seq-local-note" style="margin-left:0;">
+            <strong>[Local — stays on device]</strong>&nbsp; Generate <code>code_verifier</code> (random string). Hash it: <code>code_challenge = SHA256(code_verifier)</code>
+          </div>
+        </div>
+
+        <!-- Step 4: Copilot → Keycloak: auth request with code_challenge -->
+        <div class="seq-row">
+          <span class="seq-badge amber">4</span>
+          <span class="seq-actor-tag amber">Copilot</span>
+          <div class="seq-arrow-wrap">
+            <div class="seq-arrow-line amber"></div>
+            <div class="seq-msg-over">Browser → Keycloak login page + code_challenge &nbsp;(user authenticates)</div>
+            <span class="seq-arrowhead amber">▶</span>
+          </div>
+          <span class="seq-actor-tag amber">Keycloak</span>
+        </div>
+
+        <!-- Step 5: Keycloak → Copilot: authorization_code -->
+        <div class="seq-row">
+          <span class="seq-badge cyan">5</span>
+          <span class="seq-actor-tag dim">Keycloak</span>
+          <div class="seq-arrow-wrap">
+            <span class="seq-arrowhead cyan">◀</span>
+            <div class="seq-msg-over">Redirect: localhost callback?code=<em>authorization_code</em></div>
+            <div class="seq-arrow-line cyan"></div>
+          </div>
+          <span class="seq-actor-tag cyan">Copilot</span>
+        </div>
+
+        <!-- Step 6: Copilot → Keycloak: token request; Keycloak → Copilot: JWT -->
+        <div class="seq-row">
+          <span class="seq-badge cyan">6</span>
+          <span class="seq-actor-tag cyan">Copilot</span>
+          <div style="flex:1; display:flex; flex-direction:column; gap:6px;">
+            <div class="seq-arrow-wrap">
+              <div class="seq-arrow-line cyan"></div>
+              <div class="seq-msg-over">POST /token &nbsp;{ code, code_verifier, client_id }</div>
+              <span class="seq-arrowhead cyan">▶</span>
+            </div>
+            <div class="seq-arrow-wrap">
+              <span class="seq-arrowhead cyan">◀</span>
+              <div class="seq-msg-over" style="bottom:auto; top:calc(100% - 6px);">JWT access_token &nbsp;{ scope: mcp:events:read mcp:tickets:read mcp:reservations:write } ✓</div>
+              <div class="seq-arrow-line cyan"></div>
+            </div>
+          </div>
+          <span class="seq-actor-tag cyan">Keycloak</span>
+        </div>
+
+      </div><!-- /seq-body -->
+
+    </div><!-- /seq-wrap -->
   </div>
 
   <!-- ═══════════════════════════════════════════════════════ SLIDE 9 -->
@@ -705,31 +836,40 @@
   <div class="slide" id="slide-10">
     <div class="tag">Deep Dive</div>
     <h2>Agent Token vs. Exchanged Token</h2>
-    <div class="grid-2" style="flex:1; margin-top: 20px;">
-      <div>
-        <h3 style="color: var(--term-amber);">1. Initial Agent Token</h3>
-        <p style="color:var(--muted); font-size:1.3rem;">Obtained by Copilot via PKCE.</p>
-        <pre><span class="cmt">// Metadata</span>
-typ: <span class="str">"JWT"</span>
-alg: <span class="str">"RS256"</span>
-
-<span class="cmt">// Payload</span>
-sub:   <span class="str">"demo-user-id"</span>
-aud:   <span class="str">"mcp-server-client"</span>
-scope: <span class="str">"mcp:tickets:read mcp:reservations:write"</span>
-iss:   <span class="str">"https://keycloak/.../realm"</span></pre>
+    <div class="grid-2" style="flex:1; margin-top: 16px; gap: 28px;">
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <h3 style="color: var(--term-cyan);">① Agent Token &nbsp;<span style="font-size:1rem;font-weight:400;color:var(--muted);">aud: mcp-inventory</span></h3>
+        <p style="color:var(--muted); font-size:1.15rem; margin:0;">Issued to GitHub Copilot via Auth Code + PKCE.</p>
+        <pre style="flex:1; max-height:340px;"><span class="cmt">// Key claims</span>
+<span class="kw">"iss"</span>: <span class="str">"https://localhost:9443/realms/oauth2-playbook"</span>,
+<span class="kw">"aud"</span>: <span class="str">"oauth2-playbook-mcp-inventory"</span>,   <span class="cmt">← MCP audience</span>
+<span class="kw">"sub"</span>: <span class="str">"6c681ad3-0d08-41c8-ad97-488921a4fa09"</span>,
+<span class="kw">"azp"</span>: <span class="str">"oauth2-playbook-mcp-agent"</span>,
+<span class="kw">"scope"</span>: <span class="str">"mcp:events:read</span>
+         <span class="str">mcp:reservations:write</span>
+         <span class="str">mcp:tickets:read</span>
+         <span class="str">openid profile"</span>,           <span class="cmt">← mcp:* scopes</span>
+<span class="kw">"preferred_username"</span>: <span class="str">"demo"</span>,
+<span class="kw">"name"</span>: <span class="str">"Demo User"</span>,
+<span class="kw">"exp"</span>: <span class="num">1782167039</span>,
+<span class="kw">"jti"</span>: <span class="str">"onrtac:e2237538-65ca-60da-9dcf-a64e84a087f1"</span></pre>
       </div>
-      <div>
-        <h3 style="color: var(--term-cyan);">2. Exchanged Token</h3>
-        <p style="color:var(--muted); font-size:1.3rem;">Forwarded to the Resource Server.</p>
-        <pre><span class="cmt">// Payload</span>
-sub:   <span class="str">"demo-user-id"</span>      <span class="cmt">← Identity preserved!</span>
-aud:   <span class="str">"inventory-api"</span>     <span class="cmt">← New audience target</span>
-scope: <span class="str">"api:reservations:write"</span> <span class="cmt">← Narrowed scope</span>
-iss:   <span class="str">"https://keycloak/.../realm"</span></pre>
-
-        <div class="callout" style="margin-top:20px; border-left-color: var(--term-cyan);">
-          Token Exchange securely <strong>downscopes</strong> credentials across boundaries without losing the user identity.
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <h3 style="color: var(--term-cyan);">② Exchanged Token &nbsp;<span style="font-size:1rem;font-weight:400;color:var(--muted);">aud: resource-server</span></h3>
+        <p style="color:var(--muted); font-size:1.15rem; margin:0;">Obtained by MCP Server via Token Exchange (RFC 8693).</p>
+        <pre style="flex:1; max-height:340px;"><span class="cmt">// Key claims</span>
+<span class="kw">"iss"</span>: <span class="str">"https://localhost:9443/realms/oauth2-playbook"</span>,
+<span class="kw">"aud"</span>: <span class="str">"oauth2-playbook-inventory-resource-server"</span>, <span class="cmt">← new aud</span>
+<span class="kw">"sub"</span>: <span class="str">"6c681ad3-0d08-41c8-ad97-488921a4fa09"</span>, <span class="cmt">← same user!</span>
+<span class="kw">"azp"</span>: <span class="str">"oauth2-playbook-mcp-inventory"</span>,
+<span class="kw">"scope"</span>: <span class="str">"api:inventory:reservations:write</span>
+         <span class="str">openid profile"</span>,           <span class="cmt">← narrowed scope</span>
+<span class="kw">"preferred_username"</span>: <span class="str">"demo"</span>,
+<span class="kw">"name"</span>: <span class="str">"Demo User"</span>,
+<span class="kw">"exp"</span>: <span class="num">1782166790</span>,
+<span class="kw">"jti"</span>: <span class="str">"ntrtte:5ec38678-4b6f-0195-6024-6f5e8aa60663"</span></pre>
+        <div class="callout" style="border-left-color: var(--term-cyan); font-size:1.25rem;">
+          <strong>Identity preserved, scope narrowed.</strong> Same <code>sub</code>, different <code>aud</code> &amp; reduced <code>scope</code> — zero-trust boundary enforced.
         </div>
       </div>
     </div>
@@ -755,10 +895,13 @@ iss:   <span class="str">"https://keycloak/.../realm"</span></pre>
         <table style="margin-bottom:32px;">
           <tr><th>User</th><th>Access Allowed</th></tr>
           <tr><td><code>demo</code></td><td>Full Access (Read/Write)</td></tr>
-          <tr><td><code>ro-user</code></td><td>Read Only (403 inside RS)</td></tr>
+          <tr><td><code>demo-readonly</code></td><td>Read Only (403 on write)</td></tr>
         </table>
         <div class="callout">
-          <strong>Tools exposed:</strong> <code>reserveEvent</code>, <code>listEvents</code>
+          <strong>Tools exposed:</strong><br/>
+            <code>listTopEventsByCity</code><br/>
+            <code>availableTicketsAndPrice</code><br/>
+            <code>reserveEvent</code>
         </div>
       </div>
     </div>
@@ -766,10 +909,11 @@ iss:   <span class="str">"https://keycloak/.../realm"</span></pre>
 
   <!-- ═══════════════════════════════════════════════════════ SLIDE ANIM (12) -->
   <div class="slide" id="slide-anim">
+    <!-- Header -->
     <div style="display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
       <div>
         <div class="tag">Live Flow</div>
-        <h2 style="margin-top:10px; margin-bottom:0;">Request &amp; Token Journey</h2>
+        <h2 style="margin-top:8px;margin-bottom:0;">Token Journey — Hop by Hop</h2>
       </div>
       <div id="af-steps-dots">
         <div class="af-dot" id="dot-0"></div>
@@ -781,136 +925,56 @@ iss:   <span class="str">"https://keycloak/.../realm"</span></pre>
       </div>
     </div>
 
-    <!-- Diagram -->
-    <div class="af-diagram">
+    <!-- Diagram — position:relative so token can move inside it -->
+    <div id="af-diagram" style="position:relative; flex:1; min-height:240px;">
 
-      <!-- Main node row -->
-      <div class="af-node-row">
+      <!-- SVG background paths (drawn by JS) -->
+      <svg id="af-svg-paths" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;"></svg>
 
-        <!-- Copilot -->
-        <div class="af-node">
-          <div class="af-box af-box-copilot" id="af-copilot">
-            <span class="af-box-titlebar">● ● ●</span>
-            <div class="af-box-inner">GitHub<br/>Copilot</div>
-          </div>
-          <div class="af-label">AI Agent · Public</div>
+      <!-- Moving token packet -->
+      <div id="af-token-pkt">
+        <div id="af-token-label-txt"></div>
+        <div id="af-token-dot"></div>
+      </div>
+
+      <!-- ── Top row: Copilot | MCP | RS ── -->
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; padding:20px 30px 0 30px; height:50%;">
+
+        <div class="af-node-box" id="af-copilot">
+          <div class="titlebar">● ● ●</div>
+          <div class="body">GitHub Copilot<br/><span class="sublabel">AI Agent (MCP Client)</span></div>
         </div>
 
-        <!-- Connector: Copilot ↔ MCP -->
-        <div class="af-connector" id="af-conn-cm">
-          <div class="af-pill-row">
-            <span class="af-pill af-pill-yellow" id="af-p1">① Auth Code + PKCE</span>
-          </div>
-          <div class="af-arrow-row">
-            <div class="af-line" id="af-l1a"></div>
-            <span class="af-arrowhead" id="af-ah1">▶</span>
-            <div class="af-line rev" id="af-l1b" style="flex:.4"></div>
-          </div>
-          <div class="af-pill-row">
-            <span class="af-pill af-pill-blue" id="af-p3">③ access_token · mcp:*</span>
-          </div>
-          <div class="af-scope-row">
-            <span class="af-scope af-scope-blue" id="af-s1">mcp:events:read</span>
-            <span class="af-scope af-scope-blue" id="af-s2">mcp:tickets:read</span>
-            <span class="af-scope af-scope-blue" id="af-s3">mcp:reservations</span>
-          </div>
+        <div style="flex:1;"></div>
+
+        <div class="af-node-box" id="af-mcp">
+          <div class="titlebar">● ● ●</div>
+          <div class="body">MCP Server<br/><span class="sublabel">Quarkus · :8085</span></div>
         </div>
 
-        <!-- MCP Server -->
-        <div class="af-node">
-          <div class="af-box af-box-mcp" id="af-mcp">
-            <span class="af-box-titlebar">● ● ●</span>
-            <div class="af-box-inner">MCP<br/>Server</div>
-          </div>
-          <div class="af-label">Quarkus · :8085</div>
-        </div>
+        <div style="flex:1;"></div>
 
-        <!-- Connector: MCP → RS -->
-        <div class="af-connector" id="af-conn-mr">
-          <div class="af-pill-row">
-            <span class="af-pill af-pill-blue" id="af-p5">⑤ exchanged_token · api:*</span>
-          </div>
-          <div class="af-arrow-row">
-            <div class="af-line" id="af-l5"></div>
-            <span class="af-arrowhead" id="af-ah5">▶</span>
-          </div>
-          <div class="af-scope-row">
-            <span class="af-scope af-scope-blue" id="af-s4">api:events:read</span>
-            <span class="af-scope af-scope-blue" id="af-s5">api:reservations</span>
-          </div>
-          <div class="af-pill-row" style="margin-top:4px">
-            <span class="af-pill af-pill-blue" id="af-p6">⑥ API response ← RS</span>
+        <div class="af-node-box" id="af-rs">
+          <div class="titlebar">● ● ●</div>
+          <div class="body">Resource Server<br/><span class="sublabel">Inventory API · :9080</span></div>
+        </div>
+      </div>
+
+      <!-- ── Bottom row: Keycloak centered under Copilot+MCP midpoint ── -->
+      <div style="display:flex; justify-content:center; padding:0 30px; margin-top: 10px;">
+        <div style="width:38%; display:flex; justify-content:center;">
+          <div class="af-node-box" id="af-kc">
+            <div class="titlebar">● ● ●</div>
+            <div class="body">Keycloak<br/><span class="sublabel">OAuth 2.1 · :9443</span></div>
           </div>
         </div>
-
-        <!-- Resource Server -->
-        <div class="af-node">
-          <div class="af-box af-box-rs" id="af-rs">
-            <span class="af-box-titlebar">● ● ●</span>
-            <div class="af-box-inner">Resource<br/>Server</div>
-          </div>
-          <div class="af-label">Quarkus · :9080</div>
-        </div>
-
-      </div><!-- /node-row -->
-
-      <!-- Keycloak row -->
-      <div style="display:flex;justify-content:center;margin-top:4px;">
-        <div style="display:flex;flex-direction:column;align-items:center;width:340px;gap:0;">
-          <div style="display:flex;gap:36px;">
-
-            <!-- Auth code vertical column -->
-            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
-              <div class="af-pill-row"><span class="af-pill af-pill-yellow" id="af-p1b">① redirect → login</span></div>
-              <div class="af-arrow-row" style="flex-direction:column;height:36px;width:2px;">
-                <div style="width:2px;height:100%;background:rgba(255,255,255,0.1);border-radius:1px;position:relative;overflow:hidden;">
-                  <div id="af-lv1" style="position:absolute;top:0;left:0;width:100%;height:0;border-radius:1px;transition:height .7s ease;"></div>
-                </div>
-                <span style="font-size:1.4rem;color:rgba(255,255,255,0.15);transition:color .4s,text-shadow .4s" id="af-ahv1">▼</span>
-              </div>
-              <div class="af-pill-row"><span class="af-pill af-pill-yellow" id="af-p2">② code returned</span></div>
-              <div class="af-arrow-row" style="flex-direction:column;height:36px;width:2px;">
-                <div style="width:2px;height:100%;background:rgba(255,255,255,0.1);border-radius:1px;position:relative;overflow:hidden;">
-                  <div id="af-lv2" style="position:absolute;bottom:0;left:0;width:100%;height:0;border-radius:1px;transition:height .7s ease;"></div>
-                </div>
-                <span style="font-size:1.4rem;color:rgba(255,255,255,0.15);transition:color .4s,text-shadow .4s;transform:rotate(180deg);display:block" id="af-ahv2">▼</span>
-              </div>
-            </div>
-
-            <!-- Token exchange vertical column -->
-            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
-              <div class="af-pill-row"><span class="af-pill af-pill-yellow" id="af-p4a">④ Token Exchange req</span></div>
-              <div class="af-arrow-row" style="flex-direction:column;height:36px;width:2px;">
-                <div style="width:2px;height:100%;background:rgba(255,255,255,0.1);border-radius:1px;position:relative;overflow:hidden;">
-                  <div id="af-lv3" style="position:absolute;top:0;left:0;width:100%;height:0;border-radius:1px;transition:height .7s ease;"></div>
-                </div>
-                <span style="font-size:1.4rem;color:rgba(255,255,255,0.15);transition:color .4s,text-shadow .4s" id="af-ahv3">▼</span>
-              </div>
-              <div class="af-pill-row"><span class="af-pill af-pill-blue" id="af-p4b">④ api:* token issued</span></div>
-              <div class="af-arrow-row" style="flex-direction:column;height:36px;width:2px;">
-                <div style="width:2px;height:100%;background:rgba(255,255,255,0.1);border-radius:1px;position:relative;overflow:hidden;">
-                  <div id="af-lv4" style="position:absolute;bottom:0;left:0;width:100%;height:0;border-radius:1px;transition:height .7s ease;"></div>
-                </div>
-                <span style="font-size:1.4rem;color:rgba(255,255,255,0.15);transition:color .4s,text-shadow .4s;transform:rotate(180deg);display:block" id="af-ahv4">▼</span>
-              </div>
-            </div>
-
-          </div><!-- /gap:36px -->
-
-          <!-- Keycloak node -->
-          <div class="af-box af-box-kc" id="af-kc" style="width:240px;text-align:center;">
-            <span class="af-box-titlebar">● ● ●</span>
-            <div class="af-box-inner">Keycloak<br/><span style="font-weight:400;font-size:1.1rem;color:var(--muted);">OAuth · :9443</span></div>
-          </div>
-
-        </div>
-      </div><!-- /keycloak row -->
+      </div>
 
     </div><!-- /af-diagram -->
 
     <!-- Caption -->
     <div id="af-caption" style="flex-shrink:0;">
-      Initialising pipeline…<span id="af-cursor">▋</span>
+      Initialising flow…<span id="af-cursor">▋</span>
     </div>
 
   </div><!-- /slide-anim -->
@@ -931,42 +995,58 @@ iss:   <span class="str">"https://keycloak/.../realm"</span></pre>
   </div>
 
   <!-- ═══════════════════════════════════════════════════════ SLIDE 14 -->
-  <div class="slide" id="slide-14">
+  <div class="slide" id="slide-14" style="padding-bottom:16px; overflow:hidden;">
     <div class="tag">Takeaways</div>
     <h2>Key Takeaways</h2>
-    <div class="grid-2" style="flex:1; margin-top:20px;">
-      <div>
-        <h3 style="margin-bottom: 20px;">What We Covered</h3>
-        <table>
+
+    <!-- Main area: table left + big QR right -->
+    <div style="flex:1; display:grid; grid-template-columns:1fr 300px; gap:28px; min-height:0;">
+
+      <!-- Left: compact table -->
+      <div style="display:flex; flex-direction:column; gap:0; min-height:0;">
+        <table style="font-size:1.3rem;">
           <tr><th>Concept</th><th>Why It Matters</th></tr>
-          <tr><td>Auth Code + PKCE</td><td>Safe for public clients — no embedded secret</td></tr>
-          <tr><td>Token Exchange</td><td>Trust boundaries between protocol layers</td></tr>
-          <tr><td>Scope-based ACL</td><td>Fine-grained per-user permissions</td></tr>
-          <tr><td>Metadata Discovery</td><td>Agents auto-configure — zero manual setup</td></tr>
-          <tr><td>Audience Validation</td><td>Tokens locked to their intended service</td></tr>
-          <tr><td>Privilege Separation</td><td>Cannot escalate via token exchange</td></tr>
+          <tr><td><strong>Auth Code + PKCE</strong></td><td>Public clients get user-delegated tokens — no secrets embedded</td></tr>
+          <tr><td><strong>Token Exchange</strong></td><td>Each protocol boundary gets its own scoped, audited token</td></tr>
+          <tr><td><strong>Scope-based ACL</strong></td><td>AI can only do what the user is allowed to do</td></tr>
+          <tr><td><strong>Audience Validation</strong></td><td>Tokens rejected if sent to wrong service</td></tr>
+          <tr><td><strong>Metadata Discovery</strong></td><td>AI agents auto-configure — zero manual OAuth setup</td></tr>
+          <tr><td><strong>Least Privilege</strong></td><td>Token exchange can only narrow scope, never escalate</td></tr>
         </table>
       </div>
-      <div style="display:flex;flex-direction:column;gap:24px">
-        <div>
-          <h3 style="margin-bottom: 12px;">References</h3>
-          <div class="badge-row">
-            <span class="badge">RFC 7636 — PKCE</span>
-            <span class="badge">RFC 8693 — Exchange</span>
-            <span class="badge">OAuth 2.1 Draft</span>
-            <span class="badge">Quarkus MCP Extension</span>
+
+      <!-- Right: big QR code -->
+      <div style="display:flex; flex-direction:column; align-items:center; justify-content:space-between; gap:12px;">
+        <div style="display:flex; flex-direction:column; align-items:center; gap:10px;">
+          <p style="color:var(--muted); font-size:1.1rem; text-transform:uppercase; letter-spacing:.08em;">Community</p>
+          <div style="padding:10px; background:#ffffff; border-radius:8px; line-height:0; box-shadow:0 0 20px rgba(34,211,238,0.25);">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https://jmanc.org/&bgcolor=ffffff&color=000000&qzone=1"
+                 alt="jmanc.org QR code" width="220" height="220"
+                 style="display:block; border-radius:4px;" />
+          </div>
+          <p style="color:var(--term-cyan); font-size:1.5rem; font-weight:700; letter-spacing:.04em;">jmanc.org</p>
+        </div>
+
+        <!-- References — bottom of right column -->
+        <div style="width:100%;">
+          <p style="color:var(--muted); font-size:1rem; margin-bottom:8px; text-transform:uppercase; letter-spacing:.06em;">References</p>
+          <div style="display:flex; flex-direction:column; gap:5px;">
+            <span style="font-size:1.05rem; color:var(--text);">RFC 7636 — PKCE</span>
+            <span style="font-size:1.05rem; color:var(--text);">RFC 8693 — Token Exchange</span>
+            <span style="font-size:1.05rem; color:var(--text);">OAuth 2.1 Draft (IETF)</span>
+            <span style="font-size:1.05rem; color:var(--text);">Quarkus MCP Extension</span>
           </div>
         </div>
-        <div class="callout" style="margin-top:auto">
-          <strong>Thank you!</strong><br/>
-          Code: <code>github.com/challamani/oauth2-playbook</code><br/>
-          <span style="color:var(--muted);font-size:1.2rem">→ mcp-server-quarkus/</span>
-        </div>
-        <div style="text-align:center; padding-top: 10px;">
-          <p style="color:var(--text);font-weight:700;font-size:1.8rem;margin-bottom:4px;">Questions?</p>
-          <p style="color:var(--accent);font-size:1.4rem;margin:0;">@challamani</p>
-        </div>
       </div>
+    </div>
+
+    <!-- Footer strip -->
+    <div style="border-top:1px dashed var(--border); padding-top:12px; display:flex; justify-content:space-between; align-items:center; flex-shrink:0;">
+      <p style="color:var(--muted); font-size:1.1rem; margin:0;">
+        <code style="font-size:1.05rem;">github.com/challamani/oauth2-playbook</code>
+        <span style="margin-left:8px; color:rgba(255,255,255,0.35);">→ mcp-server-quarkus/</span>
+      </p>
+      <p style="color:var(--muted); font-size:1.1rem; margin:0;">Thank you! 🙏</p>
     </div>
   </div>
 
@@ -987,7 +1067,6 @@ iss:   <span class="str">"https://keycloak/.../realm"</span></pre>
   let   current = 0;
 
   function move(dir) {
-    const leaving = slides[current];
     slides[current].classList.remove('active');
     current = Math.max(0, Math.min(total - 1, current + dir));
     slides[current].classList.add('active');
@@ -996,11 +1075,9 @@ iss:   <span class="str">"https://keycloak/.../realm"</span></pre>
     document.getElementById('btn-next').disabled = current === total - 1;
     document.getElementById('progress-bar').style.width =
       `${((current + 1) / total) * 100}%`;
-    // auto-start animation when landing on the anim slide
     if (slides[current].id === 'slide-anim') afReplay();
   }
 
-  // Initialize total slide count dynamically
   document.getElementById('counter').textContent = `1 / ${total}`;
 
   document.addEventListener('keydown', e => {
@@ -1010,103 +1087,138 @@ iss:   <span class="str">"https://keycloak/.../realm"</span></pre>
 
   move(0);
 
-  /* ── Animated flow slide ─────────────────────────────────────── */
+  /* ══════════════════════════════════════════════════════════════
+     Token-journey animation for slide-anim
+     ══════════════════════════════════════════════════════════════ */
   let afTimer = null;
 
-  const STEPS = [
+  /* Step definitions — each hop: from, to, color, label, caption */
+  const AF_STEPS = [
     {
-      caption: '<strong>① GitHub Copilot</strong> discovers the auth server via <code>/.well-known/oauth-authorization-server</code> and launches Authorization Code + PKCE — user is redirected to Keycloak.',
-      fn: () => {
-        lit('af-copilot', 'yellow');
-        fillV('af-lv1', 'yellow');
-        showArrow('af-ahv1', 'yellow');
-        show('af-p1b'); show('af-p1');
-        fillH('af-l1a', 'yellow'); fillH('af-l1b', 'yellow');
-        arrow('af-ah1', 'yellow');
-      }
+      from: 'af-copilot', to: 'af-kc',
+      color: 'amber', label: 'Auth Request',
+      litFrom: 'amber', litTo: 'amber',
+      caption: '<strong>[1/6] Auth Code + PKCE Initiated</strong> — GitHub Copilot discovers the auth server via <code>/.well-known/oauth-authorization-server</code>. User is redirected to <strong>Keycloak</strong> for login with PKCE code challenge.'
     },
     {
-      caption: '<strong>② Keycloak</strong> validates the login and issues an <strong>authorization code</strong> back to Copilot\'s localhost callback. PKCE <code>code_challenge</code> is verified.',
-      fn: () => {
-        lit('af-kc', 'yellow');
-        fillV('af-lv2', 'yellow', true);
-        showArrow('af-ahv2', 'yellow');
-        show('af-p2');
-      }
+      from: 'af-kc', to: 'af-copilot',
+      color: 'cyan', label: 'mcp:* Token',
+      litFrom: 'amber', litTo: 'cyan',
+      caption: '<strong>[2/6] Agent Token Issued</strong> — Keycloak verifies the PKCE <code>code_verifier</code> and issues a signed <strong>JWT access token</strong> scoped to <code>mcp:events:read mcp:reservations:write mcp:tickets:read</code>. Audience: <code>mcp-inventory</code>.'
     },
     {
-      caption: '<strong>③ Copilot</strong> exchanges the code + <code>code_verifier</code> for an <strong>access token</strong> scoped to <code>mcp:*</code>. This token travels with every MCP request.',
-      fn: () => {
-        lit('af-mcp', 'blue');
-        show('af-p3');
-        show('af-s1'); show('af-s2'); show('af-s3');
-      }
+      from: 'af-copilot', to: 'af-mcp',
+      color: 'cyan', label: 'Bearer mcp:*',
+      litFrom: 'cyan', litTo: 'cyan',
+      caption: '<strong>[3/6] MCP Tool Invocation</strong> — Copilot calls <code>reserveEvent()</code> on the MCP Server, attaching the <strong>Bearer token</strong> in the Authorization header. MCP Server validates issuer, audience, expiry &amp; required scopes.'
     },
     {
-      caption: '<strong>④ MCP Server</strong> validates the inbound token (issuer · audience · scopes), then calls Keycloak for a <strong>Token Exchange (RFC 8693)</strong> to get a narrowly scoped <code>api:*</code> token.',
-      fn: () => {
-        lit('af-mcp', 'yellow');
-        lit('af-kc', 'yellow');
-        fillV('af-lv3', 'yellow');
-        showArrow('af-ahv3', 'yellow');
-        fillV('af-lv4', 'blue', true);
-        showArrow('af-ahv4', 'blue');
-        show('af-p4a'); show('af-p4b');
-      }
+      from: 'af-mcp', to: 'af-kc',
+      color: 'amber', label: 'Exchange Req',
+      litFrom: 'amber', litTo: 'amber',
+      caption: '<strong>[4/6] Token Exchange (RFC 8693)</strong> — MCP Server posts a <code>grant_type=urn:ietf:params:oauth:grant-type:token-exchange</code> request to Keycloak, providing the inbound token as <code>subject_token</code> and requesting audience <code>inventory-resource-server</code>.'
     },
     {
-      caption: '<strong>⑤ MCP Server</strong> forwards the <strong>exchanged token</strong> (<code>aud: resource-api</code>) to the Resource Server. The original Copilot token never reaches the backend.',
-      fn: () => {
-        lit('af-rs', 'blue');
-        fillH('af-l5', 'blue');
-        arrow('af-ah5', 'blue');
-        show('af-p5'); show('af-s4'); show('af-s5');
-      }
+      from: 'af-kc', to: 'af-mcp',
+      color: 'cyan', label: 'api:* Token',
+      litFrom: 'amber', litTo: 'cyan',
+      caption: '<strong>[5/6] Narrowed Token Returned</strong> — Keycloak issues a <strong>new JWT</strong> with reduced scope <code>api:inventory:reservations:write</code> and audience locked to <code>oauth2-playbook-inventory-resource-server</code>. User identity (<code>sub</code>) is preserved.'
     },
     {
-      caption: '<strong>⑥ Resource Server</strong> validates the exchanged token, enforces <strong>scope-based ACL</strong>, and returns the API response back through MCP to Copilot. ✓',
-      fn: () => {
-        lit('af-rs', 'blue');
-        lit('af-copilot', 'yellow');
-        show('af-p6');
-      }
+      from: 'af-mcp', to: 'af-rs',
+      color: 'cyan', label: 'Bearer api:*',
+      litFrom: 'cyan', litTo: 'cyan',
+      caption: '<strong>[6/6] API Call with Exchanged Token</strong> — MCP Server forwards the <strong>exchanged token</strong> to the Resource Server. The original Copilot token never reaches the backend. Resource Server enforces scope-based ACL and returns the response. ✓'
     }
   ];
 
-  function lit(id, color) {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.classList.add('lit', 'lit-' + color);
+  /* ── Helper: get element center relative to #af-diagram ── */
+  function getCenter(id) {
+    const el   = document.getElementById(id);
+    const diag = document.getElementById('af-diagram');
+    if (!el || !diag) return { x: 0, y: 0 };
+    const er = el.getBoundingClientRect();
+    const dr = diag.getBoundingClientRect();
+    return { x: er.left - dr.left + er.width / 2,
+             y: er.top  - dr.top  + er.height / 2 };
   }
-  function fillH(id, color) {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.classList.add('filled-' + color);
+
+  /* ── Helper: draw SVG background paths ── */
+  function drawPaths() {
+    const svg = document.getElementById('af-svg-paths');
+    if (!svg) return;
+    svg.innerHTML = '';
+    const pairs = [
+      ['af-copilot','af-kc'],
+      ['af-kc','af-mcp'],
+      ['af-copilot','af-mcp'],
+      ['af-mcp','af-rs']
+    ];
+    pairs.forEach(([a, b]) => {
+      const ca = getCenter(a), cb = getCenter(b);
+      const path = document.createElementNS('http://www.w3.org/2000/svg','line');
+      path.setAttribute('x1', ca.x); path.setAttribute('y1', ca.y);
+      path.setAttribute('x2', cb.x); path.setAttribute('y2', cb.y);
+      path.setAttribute('class','af-path-bg');
+      svg.appendChild(path);
+    });
   }
-  function fillV(id, color, up) {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.style.height = '100%';
-    const glowColor = color === 'blue' ? 'var(--term-cyan)' : 'var(--term-amber)';
-    el.style.background = glowColor;
-    el.style.boxShadow = `0 0 8px ${glowColor}`;
-    if (up) { el.style.top = 'auto'; el.style.bottom = '0'; }
+
+  /* ── Light up / dim nodes ── */
+  const ALL_NODES = ['af-copilot','af-mcp','af-kc','af-rs'];
+  function setLit(ids) {
+    ALL_NODES.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.classList.remove('lit-cyan','lit-amber');
+    });
+    ids.forEach(({ id, color }) => {
+      const el = document.getElementById(id);
+      if (el) el.classList.add('lit-' + color);
+    });
   }
-  function arrow(id, color) {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.classList.add('lit-' + color);
+
+  /* ── Move token from one node to another ── */
+  function moveToken(fromId, toId, color, label, durationMs, onDone) {
+    const pkt   = document.getElementById('af-token-pkt');
+    const dot   = document.getElementById('af-token-dot');
+    const lbl   = document.getElementById('af-token-label-txt');
+    if (!pkt || !dot || !lbl) { if (onDone) onDone(); return; }
+
+    const fillColor = color === 'cyan' ? 'var(--term-cyan)' : 'var(--term-amber)';
+    dot.style.background  = fillColor;
+    dot.style.color       = fillColor;
+    lbl.textContent       = label;
+    lbl.style.color       = fillColor;
+    lbl.style.borderColor = fillColor;
+    lbl.style.boxShadow   = `0 0 10px ${fillColor}44`;
+
+    const from = getCenter(fromId);
+    const to   = getCenter(toId);
+
+    /* Place at source instantly */
+    pkt.style.transition = 'none';
+    pkt.style.opacity    = '0';
+    pkt.style.left = from.x + 'px';
+    pkt.style.top  = from.y + 'px';
+
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      pkt.style.opacity = '1';
+      pkt.style.transition =
+        `left ${durationMs}ms cubic-bezier(.45,0,.55,1), ` +
+        `top  ${durationMs}ms cubic-bezier(.45,0,.55,1), ` +
+        `opacity .25s`;
+      pkt.style.left = to.x + 'px';
+      pkt.style.top  = to.y + 'px';
+
+      setTimeout(() => {
+        pkt.style.opacity = '0';
+        if (onDone) setTimeout(onDone, 250);
+      }, durationMs);
+    }));
   }
-  function showArrow(id, color) {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.style.color = color === 'blue' ? 'var(--term-cyan)' : 'var(--term-amber)';
-    el.style.textShadow = `0 0 14px ${color === 'blue' ? 'var(--term-cyan)' : 'var(--term-amber)'}`;
-  }
-  function show(id) {
-    const el = document.getElementById(id);
-    if (el) el.classList.add('show');
-  }
+
+  /* ── Set caption ── */
   function setCaption(html) {
     const el = document.getElementById('af-caption');
     if (!el) return;
@@ -1114,68 +1226,63 @@ iss:   <span class="str">"https://keycloak/.../realm"</span></pre>
     setTimeout(() => {
       el.innerHTML = html + '<span id="af-cursor">▋</span>';
       el.style.opacity = '1';
-    }, 200);
+      el.style.transition = 'opacity .3s';
+    }, 180);
   }
-  function updateDots(stepIdx) {
+
+  /* ── Update step dots ── */
+  function updateDots(idx) {
     for (let i = 0; i < 6; i++) {
       const d = document.getElementById('dot-' + i);
       if (!d) continue;
-      d.className = 'af-dot' + (i < stepIdx ? ' done' : i === stepIdx ? ' active' : '');
+      d.className = 'af-dot' + (i < idx ? ' done' : i === idx ? ' active' : '');
     }
   }
 
+  /* ── Reset everything ── */
   function afReset() {
     if (afTimer) { clearTimeout(afTimer); afTimer = null; }
-    ['af-copilot','af-mcp','af-kc','af-rs'].forEach(id => {
+    ALL_NODES.forEach(id => {
       const el = document.getElementById(id);
-      if (el) el.classList.remove('lit','lit-blue','lit-yellow','lit-amber','lit-cyan');
+      if (el) el.classList.remove('lit-cyan','lit-amber');
     });
-    ['af-l1a','af-l1b','af-l5'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.className = 'af-line' + (id === 'af-l1b' ? ' rev' : '');
-    });
-    ['af-ah1','af-ah5'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.className = 'af-arrowhead';
-    });
-    ['af-ahv1','af-ahv2','af-ahv3','af-ahv4'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) { el.style.color = ''; el.style.textShadow = ''; }
-    });
-    ['af-lv1','af-lv2','af-lv3','af-lv4'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) { el.style.height = '0'; el.style.top = '0'; el.style.bottom = 'auto'; el.style.boxShadow = ''; }
-    });
-    ['af-p1','af-p1b','af-p2','af-p3','af-p4a','af-p4b','af-p5','af-p6'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.classList.remove('show');
-    });
-    ['af-s1','af-s2','af-s3','af-s4','af-s5'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.classList.remove('show');
-    });
+    const pkt = document.getElementById('af-token-pkt');
+    if (pkt) { pkt.style.opacity = '0'; pkt.style.transition = 'none'; }
     updateDots(-1);
     const cap = document.getElementById('af-caption');
-    if (cap) cap.innerHTML = 'Initialising pipeline…<span id="af-cursor">▋</span>';
+    if (cap) cap.innerHTML = 'Initialising flow…<span id="af-cursor">▋</span>';
+    const svg = document.getElementById('af-svg-paths');
+    if (svg) svg.innerHTML = '';
   }
 
-  function afPlay(stepIdx) {
+  /* ── Play a single step ── */
+  function afPlayStep(idx) {
     if (slides[current].id !== 'slide-anim') return;
-    if (stepIdx >= STEPS.length) {
-      updateDots(6);
-      setCaption('<strong>[✓] Flow Complete!</strong> Re-initiating cycle…');
-      afTimer = setTimeout(() => afReplay(), 2800);
+    if (idx >= AF_STEPS.length) {
+      updateDots(AF_STEPS.length);
+      setCaption('<strong>[✓] Flow Complete</strong> — Token journey finished. Restarting cycle…');
+      afTimer = setTimeout(() => afReplay(), 3000);
       return;
     }
-    updateDots(stepIdx);
-    setCaption(STEPS[stepIdx].caption);
-    STEPS[stepIdx].fn();
-    afTimer = setTimeout(() => afPlay(stepIdx + 1), 3500);
+    const step = AF_STEPS[idx];
+    updateDots(idx);
+    setCaption(step.caption);
+    setLit([
+      { id: step.from, color: step.litFrom },
+      { id: step.to,   color: step.litTo   }
+    ]);
+    moveToken(step.from, step.to, step.color, step.label, 1400, () => {
+      afTimer = setTimeout(() => afPlayStep(idx + 1), 2000);
+    });
   }
 
+  /* ── Entry point ── */
   function afReplay() {
     afReset();
-    afTimer = setTimeout(() => afPlay(0), 1000);
+    afTimer = setTimeout(() => {
+      drawPaths();
+      afPlayStep(0);
+    }, 800);
   }
 </script>
 </body>

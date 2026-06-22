@@ -1,6 +1,8 @@
 package dev.mcpserver.inventory.service;
 
 import dev.mcpserver.inventory.model.AuthenticatedUser;
+import jakarta.ws.rs.ForbiddenException;
+import jakarta.ws.rs.NotAuthorizedException;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +20,7 @@ class SecurityGatewayServiceTest {
     @Test
     void defaultConstructorPathIsCovered() {
         SecurityGatewayService service = new SecurityGatewayService();
-        assertThrows(SecurityException.class, service::requireAuthenticatedUser);
+        assertThrows(NotAuthorizedException.class, service::requireAuthenticatedUser);
     }
 
     @Test
@@ -28,7 +30,7 @@ class SecurityGatewayServiceTest {
 
         SecurityGatewayService service = new SecurityGatewayService(jwt, "issuer", "aud");
 
-        assertThrows(SecurityException.class, service::requireAuthenticatedUser);
+        assertThrows(NotAuthorizedException.class, service::requireAuthenticatedUser);
     }
 
     @Test
@@ -38,7 +40,7 @@ class SecurityGatewayServiceTest {
 
         SecurityGatewayService service = new SecurityGatewayService(jwt, "issuer", "aud");
 
-        assertThrows(SecurityException.class, service::requireAuthenticatedUser);
+        assertThrows(NotAuthorizedException.class, service::requireAuthenticatedUser);
     }
 
     @Test
@@ -50,7 +52,7 @@ class SecurityGatewayServiceTest {
 
         SecurityGatewayService service = new SecurityGatewayService(jwt, "issuer", "aud");
 
-        assertThrows(SecurityException.class, service::requireAuthenticatedUser);
+        assertThrows(NotAuthorizedException.class, service::requireAuthenticatedUser);
     }
 
     @Test
@@ -129,7 +131,7 @@ class SecurityGatewayServiceTest {
 
         SecurityGatewayService service = new SecurityGatewayService(jwt, "issuer", "aud");
 
-        assertThrows(SecurityException.class, service::requireAuthenticatedUser);
+        assertThrows(NotAuthorizedException.class, service::requireAuthenticatedUser);
     }
 
     @Test
@@ -160,7 +162,7 @@ class SecurityGatewayServiceTest {
         SecurityGatewayService service = new SecurityGatewayService(jwt, "", "");
 
         assertEquals("Agent User", service.requireAuthenticatedUser("mcp:events:read").username());
-        assertThrows(SecurityException.class, () -> service.requireAuthenticatedUser("mcp:reservations:write"));
+        assertThrows(ForbiddenException.class, () -> service.requireAuthenticatedUser("mcp:reservations:write"));
     }
 
     private JsonWebToken mockBaseJwt() {
